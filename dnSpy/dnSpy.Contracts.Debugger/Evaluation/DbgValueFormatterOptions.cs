@@ -1,5 +1,5 @@
-﻿/*
-    Copyright (C) 2014-2018 de4dot@gmail.com
+/*
+    Copyright (C) 2014-2019 de4dot@gmail.com
 
     This file is part of dnSpy
 
@@ -66,6 +66,11 @@ namespace dnSpy.Contracts.Debugger.Evaluation {
 		/// Don't use debugger display attributes
 		/// </summary>
 		NoDebuggerDisplay			= 0x00000040,
+
+		/// <summary>
+		/// Show the full string value even if it's a very long string
+		/// </summary>
+		FullString					= 0x00000080,
 
 		/// <summary>
 		/// Show namespaces. Only used if <see cref="Edit"/> is clear

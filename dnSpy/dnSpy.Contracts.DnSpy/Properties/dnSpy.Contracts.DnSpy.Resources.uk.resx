@@ -118,7 +118,7 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="AllFiles" xml:space="preserve">
-    <value>Всі файли</value>
+    <value>Всі Файли</value>
   </data>
   <data name="AnErrorOccurred" xml:space="preserve">
     <value>Сталася помилка: {0}</value>
@@ -130,7 +130,7 @@
     <value>Не вдалося перетворити '{0} '</value>
   </data>
   <data name="CouldNotConvertFromString" xml:space="preserve">
-    <value>Не можу перетворити з рядка: {0}</value>
+    <value>Не можу перетворити зі стрічки: {0}</value>
   </data>
   <data name="CouldNotDeserializeData" xml:space="preserve">
     <value>Не вдалося виконати десеріалізацію даних: {0}</value>
@@ -151,7 +151,7 @@
     <value>Файли ключів сильного імені</value>
   </data>
   <data name="Files_XmlFiles" xml:space="preserve">
-    <value>XML-файли</value>
+    <value>XML Файли</value>
   </data>
   <data name="InvalidGuid" xml:space="preserve">
     <value>Неприпустимий GUID</value>

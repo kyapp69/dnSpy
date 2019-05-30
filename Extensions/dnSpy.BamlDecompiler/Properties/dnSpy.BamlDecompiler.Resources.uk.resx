@@ -130,16 +130,16 @@
     <value>Використовувати таби</value>
   </data>
   <data name="DisassembleBAMLCommand" xml:space="preserve">
-    <value>Дизасемблер BAML</value>
+    <value>Дизасемблювати BAML</value>
   </data>
   <data name="Error_AttachedEvent" xml:space="preserve">
-    <value>Приєднана подія "{0}".</value>
+    <value>Приєднана подія '{0}'.</value>
   </data>
   <data name="Error_IComponentConnectorConnetCannotBeParsed" xml:space="preserve">
-    <value>Клас "{0}" має IComponentConnector.Connect метод, але не вдалось проаналізувати.</value>
+    <value>Клас "{0}" має IComponentConnector.Connect метод, який не вдалось проаналізувати.</value>
   </data>
   <data name="Error_UnknownConnectionId" xml:space="preserve">
-    <value>Невідомий ID з'єднання: {0}</value>
+    <value>Невідоме ID з'єднання: {0}</value>
   </data>
   <data name="Msg_GlobalNamespace" xml:space="preserve">
     <value>"{0}" є префіксом для глобального простору імен.</value>

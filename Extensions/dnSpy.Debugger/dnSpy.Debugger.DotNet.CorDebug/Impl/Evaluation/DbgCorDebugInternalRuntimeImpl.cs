@@ -1,5 +1,5 @@
-﻿/*
-    Copyright (C) 2014-2018 de4dot@gmail.com
+/*
+    Copyright (C) 2014-2019 de4dot@gmail.com
 
     This file is part of dnSpy
 
@@ -30,18 +30,16 @@ using dnlib.DotNet.Writer;
 using dnSpy.Contracts.Debugger;
 using dnSpy.Contracts.Debugger.CallStack;
 using dnSpy.Contracts.Debugger.DotNet.CorDebug;
-using dnSpy.Contracts.Debugger.DotNet.Disassembly;
 using dnSpy.Contracts.Debugger.DotNet.Evaluation;
 using dnSpy.Contracts.Debugger.Engine.Evaluation;
 using dnSpy.Contracts.Debugger.Evaluation;
-using dnSpy.Contracts.Disassembly;
 using dnSpy.Contracts.Metadata;
 using dnSpy.Debugger.DotNet.CorDebug.CallStack;
 using dnSpy.Debugger.DotNet.CorDebug.Impl.Evaluation.Hooks;
 using dnSpy.Debugger.DotNet.Metadata;
 
 namespace dnSpy.Debugger.DotNet.CorDebug.Impl.Evaluation {
-	sealed class DbgCorDebugInternalRuntimeImpl : DbgCorDebugInternalRuntime, IDbgDotNetRuntime, ICorDebugRuntime {
+	sealed partial class DbgCorDebugInternalRuntimeImpl : DbgCorDebugInternalRuntime, IDbgDotNetRuntime, ICorDebugRuntime {
 		public override DbgRuntime Runtime { get; }
 		public override DmdRuntime ReflectionRuntime { get; }
 		public override CorDebugRuntimeVersion Version { get; }
@@ -84,8 +82,11 @@ namespace dnSpy.Debugger.DotNet.CorDebug.Impl.Evaluation {
 				return GetRawModuleBytesCore(module);
 			return GetRawModuleBytesCore2(module);
 
-			DbgDotNetRawModuleBytes GetRawModuleBytesCore2(DbgModule module2) =>
-				Dispatcher.InvokeRethrow(() => GetRawModuleBytesCore(module2));
+			DbgDotNetRawModuleBytes GetRawModuleBytesCore2(DbgModule module2) {
+				if (!Dispatcher.TryInvokeRethrow(() => GetRawModuleBytesCore(module2), out var result))
+					result = DbgDotNetRawModuleBytes.None;
+				return result;
+			}
 		}
 
 		sealed class DynamicModuleMetadataState {
@@ -147,15 +148,19 @@ namespace dnSpy.Debugger.DotNet.CorDebug.Impl.Evaluation {
 
 			bool TryGetMethodTokenCore2(DbgModule module2, int methodToken2, out int metadataMethodToken2, out int metadataLocalVarSigTok2) {
 				int tmpMetadataMethodToken = 0, tmpMetadataLocalVarSigTok = 0;
-				var res2 = Dispatcher.InvokeRethrow(() => {
+				if (!Dispatcher.TryInvokeRethrow(() => {
 					var res = TryGetMethodTokenCore(module2, methodToken2, out var metadataMethodToken3, out var metadataLocalVarSigTok3);
 					tmpMetadataMethodToken = metadataMethodToken3;
 					tmpMetadataLocalVarSigTok = metadataLocalVarSigTok3;
 					return res;
-				});
+				}, out var result)) {
+					metadataMethodToken2 = 0;
+					metadataLocalVarSigTok2 = 0;
+					return false;
+				}
 				metadataMethodToken2 = tmpMetadataMethodToken;
 				metadataLocalVarSigTok2 = tmpMetadataLocalVarSigTok;
-				return res2;
+				return result;
 			}
 		}
 
@@ -193,8 +198,10 @@ namespace dnSpy.Debugger.DotNet.CorDebug.Impl.Evaluation {
 				return GetFrameMethodCore(evalInfo);
 			return GetFrameMethod2(evalInfo);
 
-			DmdMethodBase GetFrameMethod2(DbgEvaluationInfo evalInfo2) =>
-				Dispatcher.InvokeRethrow(() => GetFrameMethodCore(evalInfo2));
+			DmdMethodBase GetFrameMethod2(DbgEvaluationInfo evalInfo2) {
+				Dispatcher.TryInvokeRethrow(() => GetFrameMethodCore(evalInfo2), out var result);
+				return result;
+			}
 		}
 
 		DmdMethodBase GetFrameMethodCore(DbgEvaluationInfo evalInfo) {
@@ -254,8 +261,11 @@ namespace dnSpy.Debugger.DotNet.CorDebug.Impl.Evaluation {
 				return LoadFieldCore(evalInfo, obj, field);
 			return LoadField2(evalInfo, obj, field);
 
-			DbgDotNetValueResult LoadField2(DbgEvaluationInfo evalInfo2, DbgDotNetValue obj2, DmdFieldInfo field2) =>
-				Dispatcher.InvokeRethrow(() => LoadFieldCore(evalInfo2, obj2, field2));
+			DbgDotNetValueResult LoadField2(DbgEvaluationInfo evalInfo2, DbgDotNetValue obj2, DmdFieldInfo field2) {
+				if (!Dispatcher.TryInvokeRethrow(() => LoadFieldCore(evalInfo2, obj2, field2), out var result))
+					result = DbgDotNetValueResult.CreateError(DispatcherConstants.ProcessExitedError);
+				return result;
+			}
 		}
 
 		DbgDotNetValueResult LoadFieldCore(DbgEvaluationInfo evalInfo, DbgDotNetValue obj, DmdFieldInfo field) {
@@ -324,8 +334,11 @@ namespace dnSpy.Debugger.DotNet.CorDebug.Impl.Evaluation {
 				return StoreFieldCore(evalInfo, obj, field, value);
 			return StoreField2(evalInfo, obj, field, value);
 
-			string StoreField2(DbgEvaluationInfo evalInfo2, DbgDotNetValue obj2, DmdFieldInfo field2, object value2) =>
-				Dispatcher.InvokeRethrow(() => StoreFieldCore(evalInfo2, obj2, field2, value2));
+			string StoreField2(DbgEvaluationInfo evalInfo2, DbgDotNetValue obj2, DmdFieldInfo field2, object value2) {
+				if (!Dispatcher.TryInvokeRethrow(() => StoreFieldCore(evalInfo2, obj2, field2, value2), out var result))
+					result = DispatcherConstants.ProcessExitedError;
+				return result;
+			}
 		}
 
 		string StoreFieldCore(DbgEvaluationInfo evalInfo, DbgDotNetValue obj, DmdFieldInfo field, object value) {
@@ -541,8 +554,11 @@ namespace dnSpy.Debugger.DotNet.CorDebug.Impl.Evaluation {
 				return CallCore(evalInfo, obj, method, arguments, invokeOptions);
 			return Call2(evalInfo, obj, method, arguments, invokeOptions);
 
-			DbgDotNetValueResult Call2(DbgEvaluationInfo evalInfo2, DbgDotNetValue obj2, DmdMethodBase method2, object[] arguments2, DbgDotNetInvokeOptions invokeOptions2) =>
-				Dispatcher.InvokeRethrow(() => CallCore(evalInfo2, obj2, method2, arguments2, invokeOptions2));
+			DbgDotNetValueResult Call2(DbgEvaluationInfo evalInfo2, DbgDotNetValue obj2, DmdMethodBase method2, object[] arguments2, DbgDotNetInvokeOptions invokeOptions2) {
+				if (!Dispatcher.TryInvokeRethrow(() => CallCore(evalInfo2, obj2, method2, arguments2, invokeOptions2), out var result))
+					result = DbgDotNetValueResult.CreateError(DispatcherConstants.ProcessExitedError);
+				return result;
+			}
 		}
 
 		DbgDotNetValueResult CallCore(DbgEvaluationInfo evalInfo, DbgDotNetValue obj, DmdMethodBase method, object[] arguments, DbgDotNetInvokeOptions invokeOptions) {
@@ -575,8 +591,11 @@ namespace dnSpy.Debugger.DotNet.CorDebug.Impl.Evaluation {
 				return CreateInstanceCore(evalInfo, ctor, arguments, invokeOptions);
 			return CreateInstance2(evalInfo, ctor, arguments, invokeOptions);
 
-			DbgDotNetValueResult CreateInstance2(DbgEvaluationInfo evalInfo2, DmdConstructorInfo ctor2, object[] arguments2, DbgDotNetInvokeOptions invokeOptions2) =>
-				Dispatcher.InvokeRethrow(() => CreateInstanceCore(evalInfo2, ctor2, arguments2, invokeOptions2));
+			DbgDotNetValueResult CreateInstance2(DbgEvaluationInfo evalInfo2, DmdConstructorInfo ctor2, object[] arguments2, DbgDotNetInvokeOptions invokeOptions2) {
+				if (!Dispatcher.TryInvokeRethrow(() => CreateInstanceCore(evalInfo2, ctor2, arguments2, invokeOptions2), out var result))
+					result = DbgDotNetValueResult.CreateError(DispatcherConstants.ProcessExitedError);
+				return result;
+			}
 		}
 
 		DbgDotNetValueResult CreateInstanceCore(DbgEvaluationInfo evalInfo, DmdConstructorInfo ctor, object[] arguments, DbgDotNetInvokeOptions invokeOptions) {
@@ -609,8 +628,11 @@ namespace dnSpy.Debugger.DotNet.CorDebug.Impl.Evaluation {
 				return CreateInstanceNoConstructorCore(evalInfo, type);
 			return CreateInstanceNoConstructor2(evalInfo, type);
 
-			DbgDotNetValueResult CreateInstanceNoConstructor2(DbgEvaluationInfo evalInfo2, DmdType type2) =>
-				Dispatcher.InvokeRethrow(() => CreateInstanceNoConstructorCore(evalInfo2, type2));
+			DbgDotNetValueResult CreateInstanceNoConstructor2(DbgEvaluationInfo evalInfo2, DmdType type2) {
+				if (!Dispatcher.TryInvokeRethrow(() => CreateInstanceNoConstructorCore(evalInfo2, type2), out var result))
+					result = DbgDotNetValueResult.CreateError(DispatcherConstants.ProcessExitedError);
+				return result;
+			}
 		}
 
 		DbgDotNetValueResult CreateInstanceNoConstructorCore(DbgEvaluationInfo evalInfo, DmdType type) {
@@ -630,8 +652,11 @@ namespace dnSpy.Debugger.DotNet.CorDebug.Impl.Evaluation {
 				return CreateSZArrayCore(evalInfo, elementType, length);
 			return CreateSZArray2(evalInfo, elementType, length);
 
-			DbgDotNetValueResult CreateSZArray2(DbgEvaluationInfo evalInfo2, DmdType elementType2, int length2) =>
-				Dispatcher.InvokeRethrow(() => CreateSZArrayCore(evalInfo2, elementType2, length2));
+			DbgDotNetValueResult CreateSZArray2(DbgEvaluationInfo evalInfo2, DmdType elementType2, int length2) {
+				if (!Dispatcher.TryInvokeRethrow(() => CreateSZArrayCore(evalInfo2, elementType2, length2), out var result))
+					result = DbgDotNetValueResult.CreateError(DispatcherConstants.ProcessExitedError);
+				return result;
+			}
 		}
 
 		DbgDotNetValueResult CreateSZArrayCore(DbgEvaluationInfo evalInfo, DmdType elementType, int length) {
@@ -720,8 +745,11 @@ namespace dnSpy.Debugger.DotNet.CorDebug.Impl.Evaluation {
 				return CreateArrayCore(evalInfo, elementType, dimensionInfos);
 			return CreateArray2(evalInfo, elementType, dimensionInfos);
 
-			DbgDotNetValueResult CreateArray2(DbgEvaluationInfo evalInfo2, DmdType elementType2, DbgDotNetArrayDimensionInfo[] dimensionInfos2) =>
-				Dispatcher.InvokeRethrow(() => CreateArrayCore(evalInfo2, elementType2, dimensionInfos2));
+			DbgDotNetValueResult CreateArray2(DbgEvaluationInfo evalInfo2, DmdType elementType2, DbgDotNetArrayDimensionInfo[] dimensionInfos2) {
+				if (!Dispatcher.TryInvokeRethrow(() => CreateArrayCore(evalInfo2, elementType2, dimensionInfos2), out var result))
+					result = DbgDotNetValueResult.CreateError(DispatcherConstants.ProcessExitedError);
+				return result;
+			}
 		}
 
 		DbgDotNetValueResult CreateArrayCore(DbgEvaluationInfo evalInfo, DmdType elementType, DbgDotNetArrayDimensionInfo[] dimensionInfos) {
@@ -770,8 +798,11 @@ namespace dnSpy.Debugger.DotNet.CorDebug.Impl.Evaluation {
 				return GetAliasesCore(evalInfo);
 			return GetAliases2(evalInfo);
 
-			DbgDotNetAliasInfo[] GetAliases2(DbgEvaluationInfo evalInfo2) =>
-				Dispatcher.InvokeRethrow(() => GetAliasesCore(evalInfo2));
+			DbgDotNetAliasInfo[] GetAliases2(DbgEvaluationInfo evalInfo2) {
+				if (!Dispatcher.TryInvokeRethrow(() => GetAliasesCore(evalInfo2), out var result))
+					result = Array.Empty<DbgDotNetAliasInfo>();
+				return result;
+			}
 		}
 
 		DbgDotNetAliasInfo[] GetAliasesCore(DbgEvaluationInfo evalInfo) {
@@ -819,8 +850,11 @@ namespace dnSpy.Debugger.DotNet.CorDebug.Impl.Evaluation {
 				return GetExceptionsCore(evalInfo);
 			return GetExceptions2(evalInfo);
 
-			DbgDotNetExceptionInfo[] GetExceptions2(DbgEvaluationInfo evalInfo2) =>
-				Dispatcher.InvokeRethrow(() => GetExceptionsCore(evalInfo2));
+			DbgDotNetExceptionInfo[] GetExceptions2(DbgEvaluationInfo evalInfo2) {
+				if (!Dispatcher.TryInvokeRethrow(() => GetExceptionsCore(evalInfo2), out var result))
+					result = Array.Empty<DbgDotNetExceptionInfo>();
+				return result;
+			}
 		}
 
 		DbgDotNetExceptionInfo[] GetExceptionsCore(DbgEvaluationInfo evalInfo) {
@@ -856,8 +890,11 @@ namespace dnSpy.Debugger.DotNet.CorDebug.Impl.Evaluation {
 				return GetReturnValuesCore(evalInfo);
 			return GetReturnValues2(evalInfo);
 
-			DbgDotNetReturnValueInfo[] GetReturnValues2(DbgEvaluationInfo evalInfo2) =>
-				Dispatcher.InvokeRethrow(() => GetReturnValuesCore(evalInfo2));
+			DbgDotNetReturnValueInfo[] GetReturnValues2(DbgEvaluationInfo evalInfo2) {
+				if (!Dispatcher.TryInvokeRethrow(() => GetReturnValuesCore(evalInfo2), out var result))
+					result = Array.Empty<DbgDotNetReturnValueInfo>();
+				return result;
+			}
 		}
 
 		DbgDotNetReturnValueInfo[] GetReturnValuesCore(DbgEvaluationInfo evalInfo) {
@@ -871,8 +908,10 @@ namespace dnSpy.Debugger.DotNet.CorDebug.Impl.Evaluation {
 				return GetExceptionCore(evalInfo, id);
 			return GetException2(evalInfo, id);
 
-			DbgDotNetValue GetException2(DbgEvaluationInfo evalInfo2, uint id2) =>
-				Dispatcher.InvokeRethrow(() => GetExceptionCore(evalInfo2, id2));
+			DbgDotNetValue GetException2(DbgEvaluationInfo evalInfo2, uint id2) {
+				Dispatcher.TryInvokeRethrow(() => GetExceptionCore(evalInfo2, id2), out var result);
+				return result;
+			}
 		}
 
 		DbgDotNetValue GetExceptionCore(DbgEvaluationInfo evalInfo, uint id) {
@@ -892,8 +931,10 @@ namespace dnSpy.Debugger.DotNet.CorDebug.Impl.Evaluation {
 				return GetStowedExceptionCore(evalInfo, id);
 			return GetStowedException2(evalInfo, id);
 
-			DbgDotNetValue GetStowedException2(DbgEvaluationInfo evalInfo2, uint id2) =>
-				Dispatcher.InvokeRethrow(() => GetStowedExceptionCore(evalInfo2, id2));
+			DbgDotNetValue GetStowedException2(DbgEvaluationInfo evalInfo2, uint id2) {
+				Dispatcher.TryInvokeRethrow(() => GetStowedExceptionCore(evalInfo2, id2), out var result);
+				return result;
+			}
 		}
 
 		DbgDotNetValue GetStowedExceptionCore(DbgEvaluationInfo evalInfo, uint id) {
@@ -924,8 +965,10 @@ namespace dnSpy.Debugger.DotNet.CorDebug.Impl.Evaluation {
 				return GetReturnValueCore(evalInfo, id);
 			return GetReturnValue2(evalInfo, id);
 
-			DbgDotNetValue GetReturnValue2(DbgEvaluationInfo evalInfo2, uint id2) =>
-				Dispatcher.InvokeRethrow(() => GetReturnValueCore(evalInfo2, id2));
+			DbgDotNetValue GetReturnValue2(DbgEvaluationInfo evalInfo2, uint id2) {
+				Dispatcher.TryInvokeRethrow(() => GetReturnValueCore(evalInfo2, id2), out var result);
+				return result;
+			}
 		}
 
 		DbgDotNetValue GetReturnValueCore(DbgEvaluationInfo evalInfo, uint id) {
@@ -945,8 +988,10 @@ namespace dnSpy.Debugger.DotNet.CorDebug.Impl.Evaluation {
 				return GetLocalValueCore(evalInfo, index);
 			return GetLocalValue2(evalInfo, index);
 
-			DbgDotNetValueResult GetLocalValue2(DbgEvaluationInfo evalInfo2, uint index2) =>
-				Dispatcher.InvokeRethrow(() => GetLocalValueCore(evalInfo2, index2));
+			DbgDotNetValueResult GetLocalValue2(DbgEvaluationInfo evalInfo2, uint index2) {
+				Dispatcher.TryInvokeRethrow(() => GetLocalValueCore(evalInfo2, index2), out var result);
+				return result;
+			}
 		}
 
 		DbgDotNetValueResult GetLocalValueCore(DbgEvaluationInfo evalInfo, uint index) {
@@ -969,8 +1014,11 @@ namespace dnSpy.Debugger.DotNet.CorDebug.Impl.Evaluation {
 				return GetParameterValueCore(evalInfo, index);
 			return GetParameterValue2(evalInfo, index);
 
-			DbgDotNetValueResult GetParameterValue2(DbgEvaluationInfo evalInfo2, uint index2) =>
-				Dispatcher.InvokeRethrow(() => GetParameterValueCore(evalInfo2, index2));
+			DbgDotNetValueResult GetParameterValue2(DbgEvaluationInfo evalInfo2, uint index2) {
+				if (!Dispatcher.TryInvokeRethrow(() => GetParameterValueCore(evalInfo2, index2), out var result))
+					result = DbgDotNetValueResult.CreateError(DispatcherConstants.ProcessExitedError);
+				return result;
+			}
 		}
 
 		DbgDotNetValueResult GetParameterValueCore(DbgEvaluationInfo evalInfo, uint index) {
@@ -993,8 +1041,11 @@ namespace dnSpy.Debugger.DotNet.CorDebug.Impl.Evaluation {
 				return SetLocalValueCore(evalInfo, index, targetType, value);
 			return SetLocalValue2(evalInfo, index, targetType, value);
 
-			string SetLocalValue2(DbgEvaluationInfo evalInfo2, uint index2, DmdType targetType2, object value2) =>
-				Dispatcher.InvokeRethrow(() => SetLocalValueCore(evalInfo2, index2, targetType2, value2));
+			string SetLocalValue2(DbgEvaluationInfo evalInfo2, uint index2, DmdType targetType2, object value2) {
+				if (!Dispatcher.TryInvokeRethrow(() => SetLocalValueCore(evalInfo2, index2, targetType2, value2), out var result))
+					result = DispatcherConstants.ProcessExitedError;
+				return result;
+			}
 		}
 
 		string SetLocalValueCore(DbgEvaluationInfo evalInfo, uint index, DmdType targetType, object value) {
@@ -1015,8 +1066,11 @@ namespace dnSpy.Debugger.DotNet.CorDebug.Impl.Evaluation {
 				return SetParameterValueCore(evalInfo, index, targetType, value);
 			return SetParameterValue2(evalInfo, index, targetType, value);
 
-			string SetParameterValue2(DbgEvaluationInfo evalInfo2, uint index2, DmdType targetType2, object value2) =>
-				Dispatcher.InvokeRethrow(() => SetParameterValueCore(evalInfo2, index2, targetType2, value2));
+			string SetParameterValue2(DbgEvaluationInfo evalInfo2, uint index2, DmdType targetType2, object value2) {
+				if (!Dispatcher.TryInvokeRethrow(() => SetParameterValueCore(evalInfo2, index2, targetType2, value2), out var result))
+					result = DispatcherConstants.ProcessExitedError;
+				return result;
+			}
 		}
 
 		string SetParameterValueCore(DbgEvaluationInfo evalInfo, uint index, DmdType targetType, object value) {
@@ -1040,8 +1094,11 @@ namespace dnSpy.Debugger.DotNet.CorDebug.Impl.Evaluation {
 				return CreateValueCore(evalInfo, value);
 			return CreateValue2(evalInfo, value);
 
-			DbgDotNetValueResult CreateValue2(DbgEvaluationInfo evalInfo2, object value2) =>
-				Dispatcher.InvokeRethrow(() => CreateValueCore(evalInfo2, value2));
+			DbgDotNetValueResult CreateValue2(DbgEvaluationInfo evalInfo2, object value2) {
+				if (!Dispatcher.TryInvokeRethrow(() => CreateValueCore(evalInfo2, value2), out var result))
+					result = DbgDotNetValueResult.CreateError(DispatcherConstants.ProcessExitedError);
+				return result;
+			}
 		}
 
 		DbgDotNetValueResult CreateValueCore(DbgEvaluationInfo evalInfo, object value) {
@@ -1061,8 +1118,11 @@ namespace dnSpy.Debugger.DotNet.CorDebug.Impl.Evaluation {
 				return BoxCore(evalInfo, value);
 			return Box2(evalInfo, value);
 
-			DbgDotNetValueResult Box2(DbgEvaluationInfo evalInfo2, object value2) =>
-				Dispatcher.InvokeRethrow(() => BoxCore(evalInfo2, value2));
+			DbgDotNetValueResult Box2(DbgEvaluationInfo evalInfo2, object value2) {
+				if (!Dispatcher.TryInvokeRethrow(() => BoxCore(evalInfo2, value2), out var result))
+					result = DbgDotNetValueResult.CreateError(DispatcherConstants.ProcessExitedError);
+				return result;
+			}
 		}
 
 		DbgDotNetValueResult BoxCore(DbgEvaluationInfo evalInfo, object value) {
@@ -1094,8 +1154,10 @@ namespace dnSpy.Debugger.DotNet.CorDebug.Impl.Evaluation {
 				return CanCreateObjectIdCore(valueImpl);
 			return CanCreateObjectId2(valueImpl);
 
-			bool CanCreateObjectId2(DbgDotNetValueImpl value2) =>
-				Dispatcher.InvokeRethrow(() => CanCreateObjectIdCore(value2));
+			bool CanCreateObjectId2(DbgDotNetValueImpl value2) {
+				Dispatcher.TryInvokeRethrow(() => CanCreateObjectIdCore(value2), out var result);
+				return result;
+			}
 		}
 
 		bool CanCreateObjectIdCore(DbgDotNetValueImpl value) {
@@ -1130,8 +1192,10 @@ namespace dnSpy.Debugger.DotNet.CorDebug.Impl.Evaluation {
 				return CreateObjectIdCore(valueImpl, id);
 			return CreateObjectId2(valueImpl, id);
 
-			DbgDotNetObjectId CreateObjectId2(DbgDotNetValueImpl value2, uint id2) =>
-				Dispatcher.InvokeRethrow(() => CreateObjectIdCore(value2, id2));
+			DbgDotNetObjectId CreateObjectId2(DbgDotNetValueImpl value2, uint id2) {
+				Dispatcher.TryInvokeRethrow(() => CreateObjectIdCore(value2, id2), out var result);
+				return result;
+			}
 		}
 
 		DbgDotNetObjectId CreateObjectIdCore(DbgDotNetValueImpl value, uint id) {
@@ -1183,8 +1247,10 @@ namespace dnSpy.Debugger.DotNet.CorDebug.Impl.Evaluation {
 				return EqualsCore(objectIdImpl, valueImpl);
 			return Equals2(objectIdImpl, valueImpl);
 
-			bool Equals2(DbgDotNetObjectIdImpl objectId2, DbgDotNetValueImpl value2) =>
-				Dispatcher.InvokeRethrow(() => EqualsCore(objectId2, value2));
+			bool Equals2(DbgDotNetObjectIdImpl objectId2, DbgDotNetValueImpl value2) {
+				Dispatcher.TryInvokeRethrow(() => EqualsCore(objectId2, value2), out var result);
+				return result;
+			}
 		}
 
 		readonly struct EquatableValue {
@@ -1232,8 +1298,10 @@ namespace dnSpy.Debugger.DotNet.CorDebug.Impl.Evaluation {
 				return GetHashCodeCore(objectIdImpl);
 			return GetHashCode2(objectIdImpl);
 
-			int GetHashCode2(DbgDotNetObjectIdImpl objectId2) =>
-				Dispatcher.InvokeRethrow(() => GetHashCodeCore(objectId2));
+			int GetHashCode2(DbgDotNetObjectIdImpl objectId2) {
+				Dispatcher.TryInvokeRethrow(() => GetHashCodeCore(objectId2), out var result);
+				return result;
+			}
 		}
 
 		int GetHashCodeCore(DbgDotNetObjectIdImpl objectId) {
@@ -1249,8 +1317,10 @@ namespace dnSpy.Debugger.DotNet.CorDebug.Impl.Evaluation {
 				return GetHashCodeCore(valueImpl);
 			return GetHashCode2(valueImpl);
 
-			int GetHashCode2(DbgDotNetValueImpl value2) =>
-				Dispatcher.InvokeRethrow(() => GetHashCodeCore(value2));
+			int GetHashCode2(DbgDotNetValueImpl value2) {
+				Dispatcher.TryInvokeRethrow(() => GetHashCodeCore(value2), out var result);
+				return result;
+			}
 		}
 
 		int GetHashCodeCore(DbgDotNetValueImpl value) {
@@ -1266,8 +1336,10 @@ namespace dnSpy.Debugger.DotNet.CorDebug.Impl.Evaluation {
 				return GetValueCore(evalInfo, objectIdImpl);
 			return GetValue2(evalInfo, objectIdImpl);
 
-			DbgDotNetValue GetValue2(DbgEvaluationInfo evalInfo2, DbgDotNetObjectIdImpl objectId2) =>
-				Dispatcher.InvokeRethrow(() => GetValueCore(evalInfo2, objectId2));
+			DbgDotNetValue GetValue2(DbgEvaluationInfo evalInfo2, DbgDotNetObjectIdImpl objectId2) {
+				Dispatcher.TryInvokeRethrow(() => GetValueCore(evalInfo2, objectId2), out var result);
+				return result;
+			}
 		}
 
 		DbgDotNetValue GetValueCore(DbgEvaluationInfo evalInfo, DbgDotNetObjectIdImpl objectId) {
@@ -1297,478 +1369,16 @@ namespace dnSpy.Debugger.DotNet.CorDebug.Impl.Evaluation {
 				return EqualsCore(ai, bi);
 			return Equals2(ai, bi);
 
-			bool? Equals2(DbgDotNetValueImpl a2, DbgDotNetValueImpl b2) =>
-				Dispatcher.InvokeRethrow(() => EqualsCore(a2, b2));
+			bool? Equals2(DbgDotNetValueImpl a2, DbgDotNetValueImpl b2) {
+				if (!Dispatcher.TryInvokeRethrow(() => EqualsCore(a2, b2), out var result))
+					result = false;
+				return result;
+			}
 		}
 
 		bool? EqualsCore(DbgDotNetValueImpl a, DbgDotNetValueImpl b) {
 			Dispatcher.VerifyAccess();
 			return GetEquatableValue(a.Type, a.TryGetCorValue()).Equals3(GetEquatableValue(b.Type, b.TryGetCorValue()));
-		}
-
-		public bool TryGetNativeCode(DbgStackFrame frame, out DbgDotNetNativeCode nativeCode) {
-			if (!ILDbgEngineStackFrame.TryGetEngineStackFrame(frame, out var ilFrame)) {
-				nativeCode = default;
-				return false;
-			}
-			if (Dispatcher.CheckAccess())
-				return TryGetNativeCodeCore(ilFrame, out nativeCode);
-			return TryGetNativeCode2(ilFrame, out nativeCode);
-
-			bool TryGetNativeCode2(ILDbgEngineStackFrame ilFrame2, out DbgDotNetNativeCode nativeCode2) {
-				DbgDotNetNativeCode nativeCodeTmp = default;
-				bool res = Dispatcher.InvokeRethrow(() => TryGetNativeCodeCore(ilFrame2, out nativeCodeTmp));
-				nativeCode2 = nativeCodeTmp;
-				return res;
-			}
-		}
-		bool TryGetNativeCodeCore(ILDbgEngineStackFrame ilFrame, out DbgDotNetNativeCode nativeCode) {
-			Dispatcher.VerifyAccess();
-			if (!engine.IsPaused) {
-				nativeCode = default;
-				return false;
-			}
-			var code = ilFrame.CorFrame.Code;
-			ilFrame.GetFrameMethodInfo(out var module, out var methodMetadataToken, out var genericTypeArguments, out var genericMethodArguments);
-			var reflectionMethod = TryGetMethod(module, methodMetadataToken, genericTypeArguments, genericMethodArguments);
-			return TryGetNativeCodeCore(code, reflectionMethod, out nativeCode);
-		}
-
-		public bool TryGetNativeCode(DmdMethodBase method, out DbgDotNetNativeCode nativeCode) {
-			if (Dispatcher.CheckAccess())
-				return TryGetNativeCodeCore(method, out nativeCode);
-			return TryGetNativeCode2(method, out nativeCode);
-
-			bool TryGetNativeCode2(DmdMethodBase method2, out DbgDotNetNativeCode nativeCode2) {
-				DbgDotNetNativeCode nativeCodeTmp = default;
-				bool res = Dispatcher.InvokeRethrow(() => TryGetNativeCodeCore(method2, out nativeCodeTmp));
-				nativeCode2 = nativeCodeTmp;
-				return res;
-			}
-		}
-		bool TryGetNativeCodeCore(DmdMethodBase method, out DbgDotNetNativeCode nativeCode) {
-			Dispatcher.VerifyAccess();
-			nativeCode = default;
-			if (!engine.IsPaused)
-				return false;
-
-			var dbgModule = method.Module.GetDebuggerModule();
-			if (dbgModule == null)
-				return false;
-			if (!engine.TryGetDnModule(dbgModule, out var dnModule))
-				return false;
-			var func = dnModule.CorModule.GetFunctionFromToken((uint)method.MetadataToken);
-			if (func == null)
-				return false;
-			var code = func.NativeCode;
-			if (code == null)
-				return false;
-			return TryGetNativeCodeCore(code, method, out nativeCode);
-		}
-
-		bool TryGetNativeCodeCore(CorCode code, DmdMethodBase reflectionMethod, out DbgDotNetNativeCode nativeCode) {
-			nativeCode = default;
-			if (code == null)
-				return false;
-
-			var process = code.Function?.Module?.Process;
-			if (process == null)
-				return false;
-
-			// The returned chunks are sorted
-			var chunks = code.GetCodeChunks();
-			if (chunks.Length == 0)
-				return false;
-
-			int totalLen = 0;
-			foreach (var chunk in chunks)
-				totalLen += (int)chunk.Length;
-			var allCodeBytes = new byte[totalLen];
-			int currentPos = 0;
-			foreach (var chunk in chunks) {
-				int hr = process.ReadMemory(chunk.StartAddr, allCodeBytes, currentPos, (int)chunk.Length, out int sizeRead);
-				if (hr < 0 || sizeRead != (int)chunk.Length)
-					return false;
-				currentPos += (int)chunk.Length;
-			}
-			Debug.Assert(currentPos == totalLen);
-
-			// We must get IL to native mappings before we get var homes, or the var
-			// homes array will be empty.
-			var map = code.GetILToNativeMapping();
-			var varHomes = code.GetVariables();
-			Array.Sort(varHomes, (a, b) => {
-				int c = a.StartOffset.CompareTo(b.StartOffset);
-				if (c != 0)
-					return c;
-				return a.Length.CompareTo(b.Length);
-			});
-			for (int i = 0, chunkIndex = 0, chunkOffset = 0; i < varHomes.Length; i++) {
-				var startOffset = varHomes[i].StartOffset;
-				while (chunkIndex < chunks.Length) {
-					if (startOffset < (uint)chunkOffset + chunks[chunkIndex].Length)
-						break;
-					chunkOffset += (int)chunks[chunkIndex].Length;
-					chunkIndex++;
-				}
-				Debug.Assert(chunkIndex < chunks.Length);
-				if (chunkIndex >= chunks.Length) {
-					varHomes = Array.Empty<VariableHome>();
-					break;
-				}
-				varHomes[i].StartOffset += chunks[chunkIndex].StartAddr - (uint)chunkOffset;
-			}
-			Array.Sort(varHomes, (a, b) => {
-				int c = a.SlotIndex.CompareTo(b.SlotIndex);
-				if (c != 0)
-					return c;
-				c = a.ArgumentIndex.CompareTo(b.ArgumentIndex);
-				if (c != 0)
-					return c;
-				c = a.StartOffset.CompareTo(b.StartOffset);
-				if (c != 0)
-					return c;
-				return a.Length.CompareTo(b.Length);
-			});
-
-			Array.Sort(map, (a, b) => {
-				int c = a.nativeStartOffset.CompareTo(b.nativeStartOffset);
-				if (c != 0)
-					return c;
-				return a.nativeEndOffset.CompareTo(b.nativeEndOffset);
-			});
-			totalLen = 0;
-			for (int i = 0; i < chunks.Length; i++) {
-				chunks[i].StartAddr -= (uint)totalLen;
-				totalLen += (int)chunks[i].Length;
-			}
-			var blocks = new DbgDotNetNativeCodeBlock[map.Length];
-			ulong baseAddress = chunks[0].StartAddr;
-			uint chunkByteOffset = 0;
-			for (int i = 0, chunkIndex = 0; i < blocks.Length; i++) {
-				var info = map[i];
-				bool b = info.nativeEndOffset <= (uint)allCodeBytes.Length && info.nativeStartOffset <= info.nativeEndOffset && chunkIndex < chunks.Length;
-				Debug.Assert(b);
-				if (!b)
-					return false;
-				int codeLen = (int)(info.nativeEndOffset - info.nativeStartOffset);
-				var rawCode = new ArraySegment<byte>(allCodeBytes, (int)info.nativeStartOffset, codeLen);
-				ulong address = baseAddress + info.nativeStartOffset;
-				if ((CorDebugIlToNativeMappingTypes)info.ilOffset == CorDebugIlToNativeMappingTypes.NO_MAPPING)
-					blocks[i] = new DbgDotNetNativeCodeBlock(NativeCodeBlockKind.Unknown, address, rawCode, -1);
-				else if ((CorDebugIlToNativeMappingTypes)info.ilOffset == CorDebugIlToNativeMappingTypes.PROLOG)
-					blocks[i] = new DbgDotNetNativeCodeBlock(NativeCodeBlockKind.Prolog, address, rawCode, -1);
-				else if ((CorDebugIlToNativeMappingTypes)info.ilOffset == CorDebugIlToNativeMappingTypes.EPILOG)
-					blocks[i] = new DbgDotNetNativeCodeBlock(NativeCodeBlockKind.Epilog, address, rawCode, -1);
-				else
-					blocks[i] = new DbgDotNetNativeCodeBlock(NativeCodeBlockKind.Code, address, rawCode, (int)info.ilOffset);
-
-				chunkByteOffset += (uint)codeLen;
-				for (;;) {
-					if (chunkIndex >= chunks.Length) {
-						if (i + 1 == blocks.Length)
-							break;
-						Debug.Assert(false);
-						return false;
-					}
-					if (chunkByteOffset < chunks[chunkIndex].Length)
-						break;
-					chunkByteOffset -= chunks[chunkIndex].Length;
-					chunkIndex++;
-					if (chunkIndex < chunks.Length)
-						baseAddress = chunks[chunkIndex].StartAddr;
-				}
-			}
-
-			var x86Variables = CreateVariables(varHomes) ?? Array.Empty<X86Variable>();
-			X86NativeCodeInfo codeInfo = null;
-			if (x86Variables.Length != 0)
-				codeInfo = new X86NativeCodeInfo(x86Variables);
-
-			NativeCodeOptimization optimization;
-			switch (code.CompilerFlags) {
-			case CorDebugJITCompilerFlags.CORDEBUG_JIT_DEFAULT:
-				optimization = NativeCodeOptimization.Optimized;
-				break;
-
-			case CorDebugJITCompilerFlags.CORDEBUG_JIT_DISABLE_OPTIMIZATION:
-			case CorDebugJITCompilerFlags.CORDEBUG_JIT_ENABLE_ENC:
-				optimization = NativeCodeOptimization.Unoptimized;
-				break;
-
-			default:
-				Debug.Fail($"Unknown optimization: {code.CompilerFlags}");
-				optimization = NativeCodeOptimization.Unknown;
-				break;
-			}
-
-			NativeCodeKind codeKind;
-			switch (Runtime.Process.Machine) {
-			case DbgMachine.X64:
-				codeKind = NativeCodeKind.X86_64;
-				break;
-
-			case DbgMachine.X86:
-				codeKind = NativeCodeKind.X86_32;
-				break;
-
-			default:
-				Debug.Fail($"Unknown machine: {Runtime.Process.Machine}");
-				return false;
-			}
-
-			var methodName = reflectionMethod?.ToString();
-			nativeCode = new DbgDotNetNativeCode(codeKind, optimization, blocks, codeInfo, methodName);
-			return true;
-		}
-
-		X86Variable[] CreateVariables(VariableHome[] varHomes) {
-			var x86Variables = varHomes.Length == 0 ? Array.Empty<X86Variable>() : new X86Variable[varHomes.Length];
-			var machine = Runtime.Process.Machine;
-			for (int i = 0; i < varHomes.Length; i++) {
-				var varHome = varHomes[i];
-				bool isLocal;
-				int varIndex;
-				if (varHome.SlotIndex >= 0) {
-					isLocal = true;
-					varIndex = varHome.SlotIndex;
-				}
-				else if (varHome.ArgumentIndex >= 0) {
-					isLocal = false;
-					varIndex = varHome.ArgumentIndex;
-				}
-				else
-					return null;
-
-				X86VariableLocationKind locationKind;
-				X86Register register;
-				int memoryOffset;
-				switch (varHome.LocationType) {
-				case VariableLocationType.VLT_REGISTER:
-					locationKind = X86VariableLocationKind.Register;
-					if (!TryGetRegister(machine, varHome.Register, out register))
-						return null;
-					memoryOffset = 0;
-					break;
-
-				case VariableLocationType.VLT_REGISTER_RELATIVE:
-					locationKind = X86VariableLocationKind.Memory;
-					if (!TryGetRegister(machine, varHome.Register, out register))
-						return null;
-					memoryOffset = varHome.Offset;
-					break;
-
-				case VariableLocationType.VLT_INVALID:
-					// eg. local is a ulong stored on the stack and it's 32-bit code
-					locationKind = X86VariableLocationKind.Other;
-					register = X86Register.None;
-					memoryOffset = 0;
-					break;
-
-				default:
-					return null;
-				}
-
-				const string varName = null;
-				x86Variables[i] = new X86Variable(varName, varIndex, isLocal, varHome.StartOffset, varHome.Length, locationKind, register, memoryOffset);
-			}
-			return x86Variables;
-		}
-
-		static bool TryGetRegister(DbgMachine machine, CorDebugRegister corReg, out X86Register register) {
-			switch (machine) {
-			case DbgMachine.X86:
-				switch (corReg) {
-				case CorDebugRegister.REGISTER_X86_EIP:
-					register = X86Register.EIP;
-					return true;
-				case CorDebugRegister.REGISTER_X86_ESP:
-					register = X86Register.ESP;
-					return true;
-				case CorDebugRegister.REGISTER_X86_EBP:
-					register = X86Register.EBP;
-					return true;
-				case CorDebugRegister.REGISTER_X86_EAX:
-					register = X86Register.EAX;
-					return true;
-				case CorDebugRegister.REGISTER_X86_ECX:
-					register = X86Register.ECX;
-					return true;
-				case CorDebugRegister.REGISTER_X86_EDX:
-					register = X86Register.EDX;
-					return true;
-				case CorDebugRegister.REGISTER_X86_EBX:
-					register = X86Register.EBX;
-					return true;
-				case CorDebugRegister.REGISTER_X86_ESI:
-					register = X86Register.ESI;
-					return true;
-				case CorDebugRegister.REGISTER_X86_EDI:
-					register = X86Register.EDI;
-					return true;
-				case CorDebugRegister.REGISTER_X86_FPSTACK_0:
-					register = X86Register.ST0;
-					return true;
-				case CorDebugRegister.REGISTER_X86_FPSTACK_1:
-					register = X86Register.ST1;
-					return true;
-				case CorDebugRegister.REGISTER_X86_FPSTACK_2:
-					register = X86Register.ST2;
-					return true;
-				case CorDebugRegister.REGISTER_X86_FPSTACK_3:
-					register = X86Register.ST3;
-					return true;
-				case CorDebugRegister.REGISTER_X86_FPSTACK_4:
-					register = X86Register.ST4;
-					return true;
-				case CorDebugRegister.REGISTER_X86_FPSTACK_5:
-					register = X86Register.ST5;
-					return true;
-				case CorDebugRegister.REGISTER_X86_FPSTACK_6:
-					register = X86Register.ST6;
-					return true;
-				case CorDebugRegister.REGISTER_X86_FPSTACK_7:
-					register = X86Register.ST7;
-					return true;
-				default:
-					Debug.Fail($"Unknown register number {(int)corReg}");
-					register = default;
-					return false;
-				}
-
-			case DbgMachine.X64:
-				switch (corReg) {
-				case CorDebugRegister.REGISTER_AMD64_RIP:
-					register = X86Register.RIP;
-					return true;
-				case CorDebugRegister.REGISTER_AMD64_RSP:
-					register = X86Register.RSP;
-					return true;
-				case CorDebugRegister.REGISTER_AMD64_RBP:
-					register = X86Register.RBP;
-					return true;
-				case CorDebugRegister.REGISTER_AMD64_RAX:
-					register = X86Register.RAX;
-					return true;
-				case CorDebugRegister.REGISTER_AMD64_RCX:
-					register = X86Register.RCX;
-					return true;
-				case CorDebugRegister.REGISTER_AMD64_RDX:
-					register = X86Register.RDX;
-					return true;
-				case CorDebugRegister.REGISTER_AMD64_RBX:
-					register = X86Register.RBX;
-					return true;
-				case CorDebugRegister.REGISTER_AMD64_RSI:
-					register = X86Register.RSI;
-					return true;
-				case CorDebugRegister.REGISTER_AMD64_RDI:
-					register = X86Register.RDI;
-					return true;
-				case CorDebugRegister.REGISTER_AMD64_R8:
-					register = X86Register.R8;
-					return true;
-				case CorDebugRegister.REGISTER_AMD64_R9:
-					register = X86Register.R9;
-					return true;
-				case CorDebugRegister.REGISTER_AMD64_R10:
-					register = X86Register.R10;
-					return true;
-				case CorDebugRegister.REGISTER_AMD64_R11:
-					register = X86Register.R11;
-					return true;
-				case CorDebugRegister.REGISTER_AMD64_R12:
-					register = X86Register.R12;
-					return true;
-				case CorDebugRegister.REGISTER_AMD64_R13:
-					register = X86Register.R13;
-					return true;
-				case CorDebugRegister.REGISTER_AMD64_R14:
-					register = X86Register.R14;
-					return true;
-				case CorDebugRegister.REGISTER_AMD64_R15:
-					register = X86Register.R15;
-					return true;
-				case CorDebugRegister.REGISTER_AMD64_XMM0:
-					register = X86Register.XMM0;
-					return true;
-				case CorDebugRegister.REGISTER_AMD64_XMM1:
-					register = X86Register.XMM1;
-					return true;
-				case CorDebugRegister.REGISTER_AMD64_XMM2:
-					register = X86Register.XMM2;
-					return true;
-				case CorDebugRegister.REGISTER_AMD64_XMM3:
-					register = X86Register.XMM3;
-					return true;
-				case CorDebugRegister.REGISTER_AMD64_XMM4:
-					register = X86Register.XMM4;
-					return true;
-				case CorDebugRegister.REGISTER_AMD64_XMM5:
-					register = X86Register.XMM5;
-					return true;
-				case CorDebugRegister.REGISTER_AMD64_XMM6:
-					register = X86Register.XMM6;
-					return true;
-				case CorDebugRegister.REGISTER_AMD64_XMM7:
-					register = X86Register.XMM7;
-					return true;
-				case CorDebugRegister.REGISTER_AMD64_XMM8:
-					register = X86Register.XMM8;
-					return true;
-				case CorDebugRegister.REGISTER_AMD64_XMM9:
-					register = X86Register.XMM9;
-					return true;
-				case CorDebugRegister.REGISTER_AMD64_XMM10:
-					register = X86Register.XMM10;
-					return true;
-				case CorDebugRegister.REGISTER_AMD64_XMM11:
-					register = X86Register.XMM11;
-					return true;
-				case CorDebugRegister.REGISTER_AMD64_XMM12:
-					register = X86Register.XMM12;
-					return true;
-				case CorDebugRegister.REGISTER_AMD64_XMM13:
-					register = X86Register.XMM13;
-					return true;
-				case CorDebugRegister.REGISTER_AMD64_XMM14:
-					register = X86Register.XMM14;
-					return true;
-				case CorDebugRegister.REGISTER_AMD64_XMM15:
-					register = X86Register.XMM15;
-					return true;
-				default:
-					Debug.Fail($"Unknown register number {(int)corReg}");
-					register = default;
-					return false;
-				}
-
-			default:
-				Debug.Fail($"Unknown machine: {machine}");
-				register = default;
-				return false;
-			}
-		}
-
-		public bool TryGetSymbol(ulong address, out SymbolResolverResult result) {
-			if (Dispatcher.CheckAccess())
-				return TryGetSymbolCore(address, out result);
-			return TryGetSymbolCore2(address, out result);
-
-			bool TryGetSymbolCore2(ulong address2, out SymbolResolverResult result2) {
-				SymbolResolverResult resultTmp = default;
-				bool res = Dispatcher.InvokeRethrow(() => TryGetSymbolCore(address2, out resultTmp));
-				result2 = resultTmp;
-				return res;
-			}
-		}
-		bool TryGetSymbolCore(ulong address, out SymbolResolverResult result) {
-			Dispatcher.VerifyAccess();
-			if (!engine.IsPaused) {
-				result = default;
-				return false;
-			}
-			return engine.clrDac.TryGetSymbolCore(address, out result);
 		}
 
 		protected override void CloseCore(DbgDispatcher dispatcher) { }

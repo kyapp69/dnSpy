@@ -1,5 +1,5 @@
-﻿/*
-    Copyright (C) 2014-2018 de4dot@gmail.com
+/*
+    Copyright (C) 2014-2019 de4dot@gmail.com
 
     This file is part of dnSpy
 
@@ -19,7 +19,6 @@
 
 using System;
 using System.Collections.Generic;
-using dnSpy.Contracts.DnSpy.Language.Intellisense;
 using dnSpy.Contracts.Images;
 using Microsoft.VisualStudio.Language.Intellisense;
 using Microsoft.VisualStudio.Text;

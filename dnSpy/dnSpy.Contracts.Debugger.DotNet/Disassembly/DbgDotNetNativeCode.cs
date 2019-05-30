@@ -1,5 +1,5 @@
-﻿/*
-    Copyright (C) 2014-2018 de4dot@gmail.com
+/*
+    Copyright (C) 2014-2019 de4dot@gmail.com
 
     This file is part of dnSpy
 
@@ -43,12 +43,17 @@ namespace dnSpy.Contracts.Debugger.DotNet.Disassembly {
 		/// <summary>
 		/// Extra optional info, or null if none
 		/// </summary>
-		public X86NativeCodeInfo CodeInfo { get; }
+		public NativeCodeInfo CodeInfo { get; }
 
 		/// <summary>
 		/// Method name or null
 		/// </summary>
 		public string MethodName { get; }
+
+		/// <summary>
+		/// Module name or null
+		/// </summary>
+		public string ModuleName { get; }
 
 		/// <summary>
 		/// Constructor
@@ -58,12 +63,14 @@ namespace dnSpy.Contracts.Debugger.DotNet.Disassembly {
 		/// <param name="blocks">All blocks to disassemble</param>
 		/// <param name="codeInfo">Extra code info or null</param>
 		/// <param name="methodName">Method name or null</param>
-		public DbgDotNetNativeCode(NativeCodeKind kind, NativeCodeOptimization optimization, DbgDotNetNativeCodeBlock[] blocks, X86NativeCodeInfo codeInfo, string methodName) {
+		/// <param name="moduleName">Module name or null</param>
+		public DbgDotNetNativeCode(NativeCodeKind kind, NativeCodeOptimization optimization, DbgDotNetNativeCodeBlock[] blocks, NativeCodeInfo codeInfo, string methodName, string moduleName) {
 			Kind = kind;
 			Optimization = optimization;
 			Blocks = blocks ?? throw new ArgumentNullException(nameof(blocks));
 			CodeInfo = codeInfo;
 			MethodName = methodName;
+			ModuleName = moduleName;
 		}
 	}
 }

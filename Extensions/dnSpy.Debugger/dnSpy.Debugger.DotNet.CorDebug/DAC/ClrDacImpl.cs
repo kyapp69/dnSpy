@@ -1,5 +1,5 @@
-﻿/*
-    Copyright (C) 2014-2018 de4dot@gmail.com
+/*
+    Copyright (C) 2014-2019 de4dot@gmail.com
 
     This file is part of dnSpy
 
@@ -104,6 +104,12 @@ namespace dnSpy.Debugger.DotNet.CorDebug.DAC {
 		}
 
 		public override bool TryGetSymbolCore(ulong address, out SymbolResolverResult result) {
+			const ulong MIN_ADDR = 0x10000;
+			if (address < MIN_ADDR) {
+				result = default;
+				return false;
+			}
+
 			string name;
 
 			name = clrRuntime.GetJitHelperFunctionName(address);
@@ -119,12 +125,12 @@ namespace dnSpy.Debugger.DotNet.CorDebug.DAC {
 			}
 
 			var method = clrRuntime.GetMethodByAddress(address);
-			if (method == null && address >= 0x10000) {
-				if (clrRuntime.ReadPointer(address, out ulong newAddress))
+			if (method == null && (address & ((uint)clrRuntime.PointerSize - 1)) == 0) {
+				if (clrRuntime.ReadPointer(address, out ulong newAddress) && newAddress >= MIN_ADDR)
 					method = clrRuntime.GetMethodByAddress(newAddress);
 			}
 			if (method != null) {
-				result = new SymbolResolverResult(SymbolKind.Function, method.ToString(), method.NativeCode);
+				result = new SymbolResolverResult(SymbolKind.Function, method.ToString(), address);
 				return true;
 			}
 

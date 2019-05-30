@@ -1,5 +1,5 @@
-﻿/*
-    Copyright (C) 2014-2018 de4dot@gmail.com
+/*
+    Copyright (C) 2014-2019 de4dot@gmail.com
 
     This file is part of dnSpy
 
@@ -34,15 +34,19 @@ namespace dnSpy.MainApp {
 			this.stream = stream;
 		}
 
-		static readonly string[] clrDllFilenames = new string[] { "clr.dll", "coreclr.dll" };
 		static string GetPathToClrDll() {
+#if NETFRAMEWORK
+			const string clrDllFilename = "clr.dll";
+#elif NETCOREAPP
+			const string clrDllFilename = "coreclr.dll";
+#else
+#error Unknown target framework
+#endif
 			var basePath = Path.GetDirectoryName(typeof(void).Assembly.Location);
-			foreach (var clrName in clrDllFilenames) {
-				var filename = Path.Combine(basePath, clrName);
-				if (File.Exists(filename))
-					return filename;
-			}
-			throw new InvalidProgramException($"Couldn't find clr.dll/coreclr.dll");
+			var filename = Path.Combine(basePath, clrDllFilename);
+			if (File.Exists(filename))
+				return filename;
+			throw new InvalidProgramException("Couldn't find " + clrDllFilename);
 		}
 
 		public void WriteFile(int[] tokens, out long resourceManagerTokensOffset) {

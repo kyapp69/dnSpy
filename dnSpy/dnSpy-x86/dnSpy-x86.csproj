@@ -13,17 +13,18 @@
 
     <OutputType>WinExe</OutputType>
     <Prefer32Bit>true</Prefer32Bit>
+    <PlatformTarget>AnyCPU</PlatformTarget>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
   </PropertyGroup>
 
   <PropertyGroup>
-    <ApplicationIcon>..\dnSpy\Images\dnSpy.ico</ApplicationIcon>
+    <ApplicationIcon>..\dnSpy\Images\dnSpy-x86.ico</ApplicationIcon>
     <ApplicationManifest>..\dnSpy\app.manifest</ApplicationManifest>
   </PropertyGroup>
 
   <ItemGroup>
-    <None Include="..\dnSpy\App.config">
-      <Link>App.config</Link>
+    <None Include="..\dnSpy\app.config">
+      <Link>app.config</Link>
     </None>
     <None Include="..\dnSpy\app.manifest">
       <Link>app.manifest</Link>

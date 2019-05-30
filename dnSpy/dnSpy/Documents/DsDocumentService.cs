@@ -1,5 +1,5 @@
-﻿/*
-    Copyright (C) 2014-2018 de4dot@gmail.com
+/*
+    Copyright (C) 2014-2019 de4dot@gmail.com
 
     This file is part of dnSpy
 
@@ -34,8 +34,10 @@ namespace dnSpy.Documents {
 		// PERF: Most of the time we only read from the assembly list so use a ReaderWriterLockSlim instead of a normal lock
 		readonly ReaderWriterLockSlim rwLock;
 		readonly List<DocumentInfo> documents;
-		readonly List<IDsDocument> tempCache;
+		readonly object tempCacheLock;
+		HashSet<IDsDocument> tempCache;
 		readonly IDsDocumentProvider[] documentProviders;
+		readonly AssemblyResolver assemblyResolver;
 
 		// PERF: Must be a struct; class is 9% slower (decompile mscorlib+dnSpy = 83 files)
 		readonly struct DocumentInfo {
@@ -63,7 +65,7 @@ namespace dnSpy.Documents {
 			}
 		}
 
-		public IAssemblyResolver AssemblyResolver { get; }
+		public IAssemblyResolver AssemblyResolver => assemblyResolver;
 
 		sealed class DisableAssemblyLoadHelper : IDisposable {
 			readonly DsDocumentService documentService;
@@ -91,8 +93,9 @@ namespace dnSpy.Documents {
 		public DsDocumentService(IDsDocumentServiceSettings documentServiceSettings, [ImportMany] IDsDocumentProvider[] documentProviders) {
 			rwLock = new ReaderWriterLockSlim(LockRecursionPolicy.NoRecursion);
 			documents = new List<DocumentInfo>();
-			tempCache = new List<IDsDocument>();
-			AssemblyResolver = new AssemblyResolver(this);
+			tempCacheLock = new object();
+			tempCache = new HashSet<IDsDocument>();
+			assemblyResolver = new AssemblyResolver(this);
 			this.documentProviders = documentProviders.OrderBy(a => a.Order).ToArray();
 			Settings = documentServiceSettings;
 		}
@@ -104,8 +107,11 @@ namespace dnSpy.Documents {
 				CallCollectionChanged2(eventArgs);
 		}
 
-		void CallCollectionChanged2(NotifyDocumentCollectionChangedEventArgs eventArgs) =>
+		void CallCollectionChanged2(NotifyDocumentCollectionChangedEventArgs eventArgs) {
+			if (eventArgs.Type == NotifyDocumentCollectionType.Clear)
+				assemblyResolver.OnAssembliesCleared();
 			CollectionChanged?.Invoke(this, eventArgs);
+		}
 
 		public IDsDocument[] GetDocuments() {
 			rwLock.EnterReadLock();
@@ -131,8 +137,25 @@ namespace dnSpy.Documents {
 				CallCollectionChanged(NotifyDocumentCollectionChangedEventArgs.CreateClear(oldDocuments, null));
 		}
 
-		public IDsDocument FindAssembly(IAssembly assembly) {
-			const AssemblyNameComparerFlags flags = AssemblyNameComparerFlags.All & ~AssemblyNameComparerFlags.Version;
+		static AssemblyNameComparerFlags ToAssemblyNameComparerFlags(FindAssemblyOptions options) {
+			AssemblyNameComparerFlags flags = 0;
+			if ((options & FindAssemblyOptions.Name) != 0)
+				flags |= AssemblyNameComparerFlags.Name;
+			if ((options & FindAssemblyOptions.Version) != 0)
+				flags |= AssemblyNameComparerFlags.Version;
+			if ((options & FindAssemblyOptions.PublicKeyToken) != 0)
+				flags |= AssemblyNameComparerFlags.PublicKeyToken;
+			if ((options & FindAssemblyOptions.Culture) != 0)
+				flags |= AssemblyNameComparerFlags.Culture;
+			if ((options & FindAssemblyOptions.ContentType) != 0)
+				flags |= AssemblyNameComparerFlags.ContentType;
+			return flags;
+		}
+
+		internal const FindAssemblyOptions DefaultOptions = FindAssemblyOptions.All & ~FindAssemblyOptions.Version;
+		public IDsDocument FindAssembly(IAssembly assembly) => FindAssembly(assembly, DefaultOptions);
+		public IDsDocument FindAssembly(IAssembly assembly, FindAssemblyOptions options) {
+			var flags = ToAssemblyNameComparerFlags(options);
 			var comparer = new AssemblyNameComparer(flags);
 			rwLock.EnterReadLock();
 			try {
@@ -148,7 +171,7 @@ namespace dnSpy.Documents {
 			finally {
 				rwLock.ExitReadLock();
 			}
-			lock (tempCache) {
+			lock (tempCacheLock) {
 				foreach (var document in tempCache) {
 					if (comparer.Equals(document.AssemblyDef, assembly))
 						return document;
@@ -167,14 +190,30 @@ namespace dnSpy.Documents {
 			return null;
 		}
 
-		public IDsDocument Find(IDsDocumentNameKey key) {
+		public IDsDocument Find(IDsDocumentNameKey key) => Find(key, checkTempCache: false);
+
+		internal IDsDocument Find(IDsDocumentNameKey key, bool checkTempCache) {
+			IDsDocument doc;
 			rwLock.EnterReadLock();
 			try {
-				return Find_NoLock(key).Document;
+				doc = Find_NoLock(key).Document;
 			}
 			finally {
 				rwLock.ExitReadLock();
 			}
+			if (doc != null)
+				return doc;
+
+			if (checkTempCache) {
+				lock (tempCacheLock) {
+					foreach (var document in tempCache) {
+						if (key.Equals(document.Key))
+							return document;
+					}
+				}
+			}
+
+			return null;
 		}
 
 		DocumentInfo Find_NoLock(IDsDocumentNameKey key) {
@@ -273,22 +312,31 @@ namespace dnSpy.Documents {
 		}
 
 		IDsDocument AddTempCachedDocument(IDsDocument document) {
-			// Disable mmap'd I/O before adding it to the temp cache to prevent another thread from
-			// getting the same file while we're disabling mmap'd I/O. Could lead to crashes.
-			DisableMMapdIO(document);
+			// PERF: most of the time this method has been called with the same document.
+			// If so, mmap'd IO has already been disabled and we don't need to do it again.
+			bool addIt;
+			lock (tempCacheLock)
+				addIt = !AssemblyLoadEnabled && !tempCache.Contains(document);
 
-			lock (tempCache) {
-				if (!AssemblyLoadEnabled)
-					tempCache.Add(document);
+			if (addIt) {
+				// Disable mmap'd I/O before adding it to the temp cache to prevent another thread from
+				// getting the same file while we're disabling mmap'd I/O. Could lead to crashes.
+				DisableMMapdIO(document);
+				lock (tempCacheLock) {
+					if (!AssemblyLoadEnabled)
+						tempCache.Add(document);
+				}
 			}
+
 			return document;
 		}
 
 		void ClearTempCache() {
 			bool collect;
-			lock (tempCache) {
+			lock (tempCacheLock) {
 				collect = tempCache.Count > 0;
-				tempCache.Clear();
+				if (collect)
+					tempCache = new HashSet<IDsDocument>();
 			}
 			if (collect) {
 				GC.Collect();
@@ -380,7 +428,7 @@ namespace dnSpy.Documents {
 				bool isDotNet = dotNetDir.VirtualAddress != 0 /*&& dotNetDir.Size >= 0x48*/;
 				if (isDotNet) {
 					try {
-						var options = new ModuleCreationOptions(DsDotNetDocumentBase.CreateModuleContext(AssemblyResolver));
+						var options = new ModuleCreationOptions(DsDotNetDocumentBase.CreateModuleContext(assemblyResolver));
 						options.TryToLoadPdbFromDisk = false;
 						if (isModule)
 							return DsDotNetDocument.CreateModule(documentInfo, ModuleDefMD.Load(peImage, options), true);

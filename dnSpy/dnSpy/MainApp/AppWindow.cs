@@ -1,5 +1,5 @@
-﻿/*
-    Copyright (C) 2014-2018 de4dot@gmail.com
+/*
+    Copyright (C) 2014-2019 de4dot@gmail.com
 
     This file is part of dnSpy
 
@@ -195,10 +195,7 @@ namespace dnSpy.MainApp {
 
 		void UpdateTitle() => mainWindow.Title = GetDefaultTitle();
 
-		string GetDefaultTitle() {
-			var t = $"dnSpy {AssemblyInformationalVersion} ({string.Join(", ", titleInfos.ToArray())})";
-			return t;
-		}
+		string GetDefaultTitle() => $"{Constants.DnSpy} {AssemblyInformationalVersion} ({string.Join(", ", titleInfos.ToArray())})";
 		readonly List<string> titleInfos = new List<string>();
 
 		public void AddTitleInfo(string info) {

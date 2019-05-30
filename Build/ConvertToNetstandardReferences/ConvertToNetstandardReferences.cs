@@ -1,5 +1,5 @@
-﻿/*
-    Copyright (C) 2014-2018 de4dot@gmail.com
+/*
+    Copyright (C) 2014-2019 de4dot@gmail.com
 
     This file is part of dnSpy
 
@@ -187,7 +187,7 @@ namespace ConvertToNetstandardReferences {
 				return null;
 			var options = new ModuleCreationOptions(context);
 			options.TryToLoadPdbFromDisk = false;
-			module = ModuleDefMD.Load(path, context);
+			module = ModuleDefMD.Load(path, options);
 			modules.Add(name, module);
 			return module.Assembly ?? throw new InvalidOperationException("It's a netmodule");
 		}

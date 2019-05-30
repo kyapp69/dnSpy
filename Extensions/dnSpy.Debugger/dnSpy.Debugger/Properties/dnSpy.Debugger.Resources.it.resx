@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <root>
   <!-- 
     Microsoft ResX Schema 
@@ -142,10 +142,10 @@
     <value>Connettersi al processo</value>
   </data>
   <data name="Attach_UseDnSpy32" xml:space="preserve">
-    <value>Usa dnSpy.exe per connetterti ai processi a 64-bit</value>
+    <value>Use 64-bit dnSpy to attach to 64-bit processes</value>
   </data>
   <data name="Attach_UseDnSpy64" xml:space="preserve">
-    <value>Usa dnSpy-x86.exe per connetterti ai processi a 32-bit</value>
+    <value>Use 32-bit dnSpy to attach to 32-bit processes</value>
   </data>
   <data name="BreakCommand" xml:space="preserve">
     <value>Interromp_i tutto</value>
@@ -264,8 +264,8 @@
   <data name="DbgSettings_AutoOpenLocalsWindow" xml:space="preserve">
     <value>Visualizza la finestra variabili locali quando il debugger viene avviato</value>
   </data>
-  <data name="DbgSettings_DisableManagedDebuggerDetection" xml:space="preserve">
-    <value>Impedisci che il codice rilevi un debugger gestito</value>
+  <data name="DbgSettings_DisableDebuggerDetection" xml:space="preserve">
+    <value>Impedisci al codice di rilevare il debugger</value>
   </data>
   <data name="DbgSettings_IgnoreBreakInstructions" xml:space="preserve">
     <value>Ignora Debugger.Break() e l'interruzione delle istruzioni</value>
@@ -1489,12 +1489,33 @@
     <value>Copia E_spressione</value>
   </data>
   <data name="Error_CouldNotShowDisassembly" xml:space="preserve">
-    <value>Could not find the method's code. Make sure that the process is paused and that the method has been jitted.</value>
+    <value>Impossibile trovare il codice del metodo. Assicurarsi che il processo sia in pausa e che il metodo sia stato eseguito.</value>
   </data>
   <data name="DisassemblyCommand" xml:space="preserve">
-    <value>_Disassembly</value>
+    <value>_Smontaggio</value>
   </data>
   <data name="ShortCutKeyAlt8" xml:space="preserve">
     <value>Alt+8</value>
+  </data>
+  <data name="DbgSettings_IgnoreUnhandledExceptions" xml:space="preserve">
+    <value>Ignore unhandled exceptions</value>
+  </data>
+  <data name="RunWithInvalidExtension" xml:space="preserve">
+    <value>Are you sure you want to run this file which doesn't have a valid extension?</value>
+  </data>
+  <data name="DebugWithInvalidExtension" xml:space="preserve">
+    <value>Are you sure you want to debug this file which doesn't have a valid extension?</value>
+  </data>
+  <data name="Processes_NoMatch" xml:space="preserve">
+    <value>No processes match your search filter.</value>
+  </data>
+  <data name="Processes_Search" xml:space="preserve">
+    <value>Ricerca</value>
+  </data>
+  <data name="Processes_ResetSearchSettings_ToolTip" xml:space="preserve">
+    <value>Reset all search criteria so that all processes are shown</value>
+  </data>
+  <data name="Processes_Search_ToolTip" xml:space="preserve">
+    <value>Cerca un processo</value>
   </data>
 </root>

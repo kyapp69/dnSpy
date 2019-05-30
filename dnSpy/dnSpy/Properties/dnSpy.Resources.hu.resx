@@ -480,12 +480,6 @@
   <data name="Options_Misc_Button_EnableAllWarnings" xml:space="preserve">
     <value>Minden figyelmeztető üzenet engedélyezése</value>
   </data>
-  <data name="Options_Misc_Deserialize" xml:space="preserve">
-    <value>Típusok deszerializálása az erőforrásokban (nem biztonságos)</value>
-  </data>
-  <data name="Options_Misc_Deserialize_ToolTip" xml:space="preserve">
-    <value>Minden szerelvény betöltődhet és elindulhat az erőforrásokban lévő adatokkal.</value>
-  </data>
   <data name="Options_Misc_UseMmapdIO" xml:space="preserve">
     <value>Memóriába leképezett I/O használata</value>
   </data>
@@ -722,18 +716,6 @@
   </data>
   <data name="ToolWindowWinPosButtonToolTip" xml:space="preserve">
     <value>Ablak pozíció</value>
-  </data>
-  <data name="UseNewRendererHeader" xml:space="preserve">
-    <value>Új szöveg formázó használata</value>
-  </data>
-  <data name="UseNewRendererInfo" xml:space="preserve">
-    <value>Az új szöveg formázó gyorsabb, de nem támogatja a sortörést vagy minden unicode karaktert.</value>
-  </data>
-  <data name="UseNewRenderer_HexEditor" xml:space="preserve">
-    <value>Hexa szerkesztő</value>
-  </data>
-  <data name="UseNewRenderer_TextEditor" xml:space="preserve">
-    <value>Szöveg szerkesztő</value>
   </data>
   <data name="Theme_Blue" xml:space="preserve">
     <value>_Kék</value>
@@ -1962,11 +1944,11 @@ A szűrő a Szerelvény Böngésző beállításainál módosítható.</value>
   <data name="DisassemblySettings_ScaleBeforeIndex" xml:space="preserve">
     <value>Mutassa a méretezés értékét az index regiszter előtt</value>
   </data>
-  <data name="DisassemblySettings_ShortBranchNumbers" xml:space="preserve">
-    <value>Rövid számok (elágazásnál)</value>
+  <data name="DisassemblySettings_BranchLeadingZeroes" xml:space="preserve">
+    <value>Vezető nullák hozzáadása (ágak)</value>
   </data>
-  <data name="DisassemblySettings_ShortNumbers" xml:space="preserve">
-    <value>Rövid számok</value>
+  <data name="DisassemblySettings_LeadingZeroes" xml:space="preserve">
+    <value>Vezető nullák hozzáadása</value>
   </data>
   <data name="DisassemblySettings_ShowBranchSize" xml:space="preserve">
     <value>Elágazás méretének mutatása</value>
@@ -2048,5 +2030,14 @@ A szűrő a Szerelvény Böngésző beállításainál módosítható.</value>
   </data>
   <data name="Disassembly_MethodIsNotOptimized" xml:space="preserve">
     <value>A metódus nem optimalizált</value>
+  </data>
+  <data name="DisassemblySettings_ShowSymbolAddress" xml:space="preserve">
+    <value>Szimbólum címek mutatása</value>
+  </data>
+  <data name="Decompile_Timestamp" xml:space="preserve">
+    <value>Időbélyeg:</value>
+  </data>
+  <data name="UnknownValue" xml:space="preserve">
+    <value>&lt;Ismeretlen&gt;</value>
   </data>
 </root>

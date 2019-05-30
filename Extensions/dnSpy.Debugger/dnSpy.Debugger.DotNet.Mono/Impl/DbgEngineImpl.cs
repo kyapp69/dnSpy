@@ -1,5 +1,5 @@
-﻿/*
-    Copyright (C) 2014-2018 de4dot@gmail.com
+/*
+    Copyright (C) 2014-2019 de4dot@gmail.com
 
     This file is part of dnSpy
 
@@ -26,7 +26,6 @@ using System.Linq;
 using System.Net;
 using System.Net.Sockets;
 using System.Runtime.InteropServices;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using dnSpy.Contracts.Debugger;
@@ -1141,7 +1140,7 @@ namespace dnSpy.Debugger.DotNet.Mono.Impl {
 				return false;
 
 			var moduleData = new DbgModuleData(this, monoModule);
-			var engineModule = ModuleCreator.CreateModule(this, objectFactory, appDomain, monoModule, moduleOrder++, moduleData);
+			var engineModule = ModuleCreator.CreateModule(this, objectFactory, appDomain, monoModule, ++moduleOrder, moduleData);
 			moduleData.ModuleId = ModuleIdUtils.Create(engineModule.Module, monoModule);
 			lock (lockObj) {
 				if (!toAssemblyModules.TryGetValue(monoModule.Assembly, out var modules))

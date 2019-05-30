@@ -1,5 +1,5 @@
-﻿/*
-    Copyright (C) 2014-2018 de4dot@gmail.com
+/*
+    Copyright (C) 2014-2019 de4dot@gmail.com
 
     This file is part of dnSpy
 
@@ -21,7 +21,7 @@ namespace dnSpy.Contracts.Disassembly {
 	/// <summary>
 	/// GNU assembler (AT&amp;T syntax) disassembly settings
 	/// </summary>
-	public interface IGasDisassemblySettings : IDisassemblySettings {
+	public interface IGasDisassemblySettings : IX86DisassemblySettings {
 		/// <summary>
 		/// If true, the formatter doesn't add '%' to registers, eg. %eax vs eax
 		/// </summary>

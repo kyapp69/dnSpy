@@ -1,4 +1,4 @@
-﻿<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project>
   <PropertyGroup>
     <!-- Remove garbage files added by Microsoft.CodeAnalysis.Workspaces.Common 2.9.0+ when target is .NET Framework -->
     <!-- Also remove other stuff we don't need -->
@@ -38,7 +38,6 @@
     <GarbageDir>$(GarbageDir);$(OutputPath)\ko</GarbageDir>
     <GarbageDir>$(GarbageDir);$(OutputPath)\pl</GarbageDir>
     <GarbageDir>$(GarbageDir);$(OutputPath)\pt-BR</GarbageDir>
-    <GarbageDir>$(GarbageDir);$(OutputPath)\tr</GarbageDir>
     <GarbageDir>$(GarbageDir);$(OutputPath)\zh-Hans</GarbageDir>
     <GarbageDir>$(GarbageDir);$(OutputPath)\zh-Hant</GarbageDir>
   </PropertyGroup>

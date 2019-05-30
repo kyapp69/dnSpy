@@ -1,5 +1,5 @@
-﻿/*
-    Copyright (C) 2014-2018 de4dot@gmail.com
+/*
+    Copyright (C) 2014-2019 de4dot@gmail.com
 
     This file is part of dnSpy
 
@@ -27,7 +27,7 @@ using Microsoft.VisualStudio.Utilities;
 
 namespace dnSpy.Text.Classification {
 	static class ThemeClassificationFormatDefinitions {
-#pragma warning disable 0169
+#pragma warning disable CS0169
 		[Export(typeof(ClassificationTypeDefinition))]
 		[Name(PredefinedClassificationTypeNames.NaturalLanguage)]
 		static ClassificationTypeDefinition NaturalLanguageClassificationTypeDefinition;
@@ -1640,7 +1640,7 @@ namespace dnSpy.Text.Classification {
 		[Name(ThemeClassificationTypeNames.AsmHexBytes)]
 		[BaseDefinition(PredefinedClassificationTypeNames.FormalLanguage)]
 		static ClassificationTypeDefinition AsmHexBytesClassificationTypeDefinition;
-#pragma warning restore 0169
+#pragma warning restore CS0169
 
 		[Export(typeof(EditorFormatDefinition))]
 		[ClassificationType(ClassificationTypeNames = ThemeClassificationTypeNames.Text)]

@@ -1,5 +1,5 @@
-﻿/*
-    Copyright (C) 2014-2018 de4dot@gmail.com
+/*
+    Copyright (C) 2014-2019 de4dot@gmail.com
 
     This file is part of dnSpy
 
@@ -299,7 +299,7 @@ namespace dnSpy.Contracts.Debugger.DotNet.Evaluation {
 		int GetHashCode(DbgDotNetValue value);
 
 		/// <summary>
-		/// Gets an object ID's value
+		/// Gets an object ID's value or null if there was an error
 		/// </summary>
 		/// <param name="evalInfo">Evaluation info</param>
 		/// <param name="objectId">Object id created by this class</param>

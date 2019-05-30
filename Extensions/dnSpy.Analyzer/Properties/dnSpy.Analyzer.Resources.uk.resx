@@ -130,7 +130,7 @@
     <value>Ким Присвоєний</value>
   </data>
   <data name="CopyCommand" xml:space="preserve">
-    <value>Копіювати</value>
+    <value>Копіюв_ати</value>
   </data>
   <data name="DoubleClick" xml:space="preserve">
     <value>Подвійний клік</value>
@@ -151,10 +151,10 @@
     <value>Перейти до посилання</value>
   </data>
   <data name="GoToReferenceInCodeCommand" xml:space="preserve">
-    <value>Показати посилання в метод</value>
+    <value>Показати посилання на метод</value>
   </data>
   <data name="GoToReferenceInCodeNewTabCommand" xml:space="preserve">
-    <value>Показати посилання в методі (Нова Вкладка)</value>
+    <value>Показати посилання в методі (Нова _Вкладка)</value>
   </data>
   <data name="GoToReferenceNewTabCommand" xml:space="preserve">
     <value>Перейти до посилання (Нова Вкладка)</value>

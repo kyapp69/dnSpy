@@ -1,5 +1,5 @@
-﻿/*
-    Copyright (C) 2014-2018 de4dot@gmail.com
+/*
+    Copyright (C) 2014-2019 de4dot@gmail.com
 
     This file is part of dnSpy
 
@@ -17,7 +17,7 @@
     along with dnSpy.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-using dnSpy.Contracts.Text.Classification;
+using dnSpy.Contracts.Debugger.Text.DnSpy;
 using dnSpy.Contracts.ToolWindows.Search;
 using dnSpy.Debugger.Text;
 using dnSpy.Debugger.UI;
@@ -29,12 +29,13 @@ namespace dnSpy.Debugger.ToolWindows.Threads {
 		UIDispatcher UIDispatcher { get; }
 		IClassificationFormatMap ClassificationFormatMap { get; }
 		ITextBlockContentInfoFactory TextBlockContentInfoFactory { get; }
-		TextClassifierTextColorWriter TextClassifierTextColorWriter { get; }
+		DbgTextClassifierTextColorWriter TextClassifierTextColorWriter { get; }
 		int UIVersion { get; }
 		ThreadFormatter Formatter { get; }
 		bool SyntaxHighlight { get; }
 		bool UseHexadecimal { get; }
 		bool DigitSeparators { get; }
+		bool FullString { get; }
 		SearchMatcher SearchMatcher { get; }
 		ClassifiedTextWriter ClassifiedTextWriter { get; }
 	}
@@ -43,12 +44,13 @@ namespace dnSpy.Debugger.ToolWindows.Threads {
 		public UIDispatcher UIDispatcher { get; }
 		public IClassificationFormatMap ClassificationFormatMap { get; }
 		public ITextBlockContentInfoFactory TextBlockContentInfoFactory { get; }
-		public TextClassifierTextColorWriter TextClassifierTextColorWriter { get; }
+		public DbgTextClassifierTextColorWriter TextClassifierTextColorWriter { get; }
 		public int UIVersion { get; set; }
 		public ThreadFormatter Formatter { get; set; }
 		public bool SyntaxHighlight { get; set; }
 		public bool UseHexadecimal { get; set; }
 		public bool DigitSeparators { get; set; }
+		public bool FullString { get; set; }
 		public SearchMatcher SearchMatcher { get; }
 		public ClassifiedTextWriter ClassifiedTextWriter { get; }
 
@@ -56,7 +58,7 @@ namespace dnSpy.Debugger.ToolWindows.Threads {
 			UIDispatcher = uiDispatcher;
 			ClassificationFormatMap = classificationFormatMap;
 			TextBlockContentInfoFactory = textBlockContentInfoFactory;
-			TextClassifierTextColorWriter = new TextClassifierTextColorWriter();
+			TextClassifierTextColorWriter = new DbgTextClassifierTextColorWriter();
 			SearchMatcher = searchMatcher;
 			ClassifiedTextWriter = new ClassifiedTextWriter();
 		}

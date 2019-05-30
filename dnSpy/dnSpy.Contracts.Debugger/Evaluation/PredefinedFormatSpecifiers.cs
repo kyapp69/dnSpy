@@ -1,5 +1,5 @@
-﻿/*
-    Copyright (C) 2014-2018 de4dot@gmail.com
+/*
+    Copyright (C) 2014-2019 de4dot@gmail.com
 
     This file is part of dnSpy
 
@@ -116,6 +116,16 @@ namespace dnSpy.Contracts.Debugger.Evaluation {
 		public const string NoDebuggerDisplay = "ndda";
 
 		/// <summary>
+		/// Show the full string value even if it's a very long string
+		/// </summary>
+		public const string FullString = "fs";
+
+		/// <summary>
+		/// Don't show the full string value if it's a very long string
+		/// </summary>
+		public const string NoFullString = "nfs";
+
+		/// <summary>
 		/// Show namespaces
 		/// </summary>
 		public const string Namespaces = "ns";
@@ -191,7 +201,7 @@ namespace dnSpy.Contracts.Debugger.Evaluation {
 						options &= ~DbgValueFormatterOptions.DigitSeparators;
 						break;
 					case EditExpression:
-						options |= ~DbgValueFormatterOptions.Edit;
+						options |= DbgValueFormatterOptions.Edit;
 						break;
 					case ToString:
 						options |= DbgValueFormatterOptions.ToString;
@@ -204,6 +214,12 @@ namespace dnSpy.Contracts.Debugger.Evaluation {
 						break;
 					case NoDebuggerDisplay:
 						options |= DbgValueFormatterOptions.NoDebuggerDisplay;
+						break;
+					case FullString:
+						options |= DbgValueFormatterOptions.FullString;
+						break;
+					case NoFullString:
+						options &= ~DbgValueFormatterOptions.FullString;
 						break;
 					case Namespaces:
 						options |= DbgValueFormatterOptions.Namespaces;

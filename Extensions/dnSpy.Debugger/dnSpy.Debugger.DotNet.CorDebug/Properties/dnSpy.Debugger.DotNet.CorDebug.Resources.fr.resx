@@ -193,10 +193,10 @@
     <value>WaitSleepJoin</value>
   </data>
   <data name="UseDnSpy64ExeToDebug32" xml:space="preserve">
-    <value>DnSpy-x86.exe permet de déboguer des applications 32 bits.</value>
+    <value>Utilisez dnSpy 32-bit pour les exécutables 32-bit.</value>
   </data>
   <data name="UseDnSpyExeToDebug64" xml:space="preserve">
-    <value>DnSpy.exe permet de déboguer des applications 64 bits.</value>
+    <value>Utilisez dnSpy 64-bit pour les exécutables 64-bit.</value>
   </data>
   <data name="ExceptionMessageIsNull" xml:space="preserve">
     <value>« &lt;no message exception&gt; »</value>
@@ -266,5 +266,8 @@
   </data>
   <data name="Error_CLRDebuggerErrorOccurred" xml:space="preserve">
     <value>Une erreur du débogueur CLR s'est produite. Terminez le processus débogué et réessayez. HR : 0x{0:X8} Erreur : 0x{1:X8}</value>
+  </data>
+  <data name="DbgAsm_UseHostExecutable" xml:space="preserve">
+    <value>Utiliser l'exécutable hôte</value>
   </data>
 </root>

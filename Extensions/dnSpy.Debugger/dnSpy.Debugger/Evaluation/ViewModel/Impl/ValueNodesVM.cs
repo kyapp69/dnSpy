@@ -1,5 +1,5 @@
-﻿/*
-    Copyright (C) 2014-2018 de4dot@gmail.com
+/*
+    Copyright (C) 2014-2019 de4dot@gmail.com
 
     This file is part of dnSpy
 
@@ -599,6 +599,8 @@ namespace dnSpy.Debugger.Evaluation.ViewModel.Impl {
 				options |= DbgValueFormatterOptions.ToString;
 			if (debuggerSettings.UseDigitSeparators)
 				options |= DbgValueFormatterOptions.DigitSeparators;
+			if (debuggerSettings.FullString)
+				options |= DbgValueFormatterOptions.FullString;
 			if (dbgEvalFormatterSettings.ShowNamespaces)
 				options |= DbgValueFormatterOptions.Namespaces;
 			if (dbgEvalFormatterSettings.ShowIntrinsicTypeKeywords)

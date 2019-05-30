@@ -118,13 +118,13 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="AppendObject" xml:space="preserve">
-    <value>Додати об'єкт</value>
+    <value>Додати Об'єкт</value>
   </data>
   <data name="AppendType" xml:space="preserve">
     <value>Додати тип</value>
   </data>
   <data name="AssemblyDlg_Main_CB_DisableJITCompileOpt" xml:space="preserve">
-    <value>Вимкнути оптимізатор JIT-компіляції</value>
+    <value>_Вимкнути Оптимізатор JIT-компіляції</value>
   </data>
   <data name="AssemblyDlg_Main_CB_EnableJITCompTrck" xml:space="preserve">
     <value>Ввімкнути відслідковування _JIT-компіляції</value>
@@ -133,52 +133,52 @@
     <value>Архітектура проц_есора вказана</value>
   </data>
   <data name="AssemblyDlg_Main_CB_PublicKey" xml:space="preserve">
-    <value>Відкритий ключ</value>
+    <value>Відкритий _Ключ</value>
   </data>
   <data name="AssemblyDlg_Main_CB_Retargetable" xml:space="preserve">
-    <value>Retargetable</value>
+    <value>_Retargetable</value>
   </data>
   <data name="AssemblyDlg_Main_ContentType" xml:space="preserve">
-    <value>Тип вмістимого</value>
+    <value>Тип _Вмістимого</value>
   </data>
   <data name="AssemblyDlg_Main_Culture" xml:space="preserve">
-    <value>Локаль</value>
+    <value>Л_окаль</value>
   </data>
   <data name="AssemblyDlg_Main_DotNetVersion" xml:space="preserve">
-    <value>Версія .NET</value>
+    <value>В_ерсія .NET</value>
   </data>
   <data name="AssemblyDlg_Main_HashAlgorithm" xml:space="preserve">
-    <value>Хеш алгоритм</value>
+    <value>_Хеш Алгоритм</value>
   </data>
   <data name="AssemblyDlg_Main_Name" xml:space="preserve">
-    <value>Назва</value>
+    <value>_Назва</value>
   </data>
   <data name="AssemblyDlg_Main_ProcessorArch" xml:space="preserve">
-    <value>Архітектура процесора</value>
+    <value>Архітектура пр_оцесора</value>
   </data>
   <data name="AssemblyDlg_Main_PublicKey" xml:space="preserve">
-    <value>Відкритий ключ</value>
+    <value>_Відкритий ключ</value>
   </data>
   <data name="AssemblyDlg_Main_Version" xml:space="preserve">
-    <value>Версія</value>
+    <value>_Версія</value>
   </data>
   <data name="Button_Add" xml:space="preserve">
-    <value>Додати</value>
+    <value>_Додати</value>
   </data>
   <data name="Button_Add2" xml:space="preserve">
-    <value>Додати...</value>
+    <value>_Додати...</value>
   </data>
   <data name="Button_Cancel" xml:space="preserve">
-    <value>Відміна</value>
+    <value>_Відміна</value>
   </data>
   <data name="Button_Delete" xml:space="preserve">
-    <value>Видалити</value>
+    <value>_Видалити</value>
   </data>
   <data name="Button_Edit" xml:space="preserve">
-    <value>Редагувати...</value>
+    <value>_Редагувати...</value>
   </data>
   <data name="Button_OK" xml:space="preserve">
-    <value>ОК</value>
+    <value>_ОК</value>
   </data>
   <data name="Button_Remove" xml:space="preserve">
     <value>_Видалити</value>
@@ -187,7 +187,7 @@
     <value>Очистити</value>
   </data>
   <data name="CA_NA_Name" xml:space="preserve">
-    <value>Назва</value>
+    <value>_Назва</value>
   </data>
   <data name="CA_NA_PropertyFieldTypeToolTip" xml:space="preserve">
     <value>Тип властивості/поля</value>
@@ -211,10 +211,10 @@
     <value>Аргументи конструктора</value>
   </data>
   <data name="CopyAsTextCommand" xml:space="preserve">
-    <value>Копіювати як текст</value>
+    <value>Копіювати як те_кст</value>
   </data>
   <data name="CopyCommand" xml:space="preserve">
-    <value>Копіювати</value>
+    <value>Копіюв_ати</value>
   </data>
   <data name="CopyILBytesCommand" xml:space="preserve">
     <value>Копіювати байти IL</value>
@@ -238,7 +238,7 @@
     <value>Створити користувацький атрибут</value>
   </data>
   <data name="CreateEventCommand" xml:space="preserve">
-    <value>Створити подію...</value>
+    <value>Створити Подію...</value>
   </data>
   <data name="CreateEventCommand2" xml:space="preserve">
     <value>Створити подію</value>
@@ -404,37 +404,10 @@
     <value>Викликати...</value>
   </data>
   <data name="Event_Name" xml:space="preserve">
-    <value>Назва</value>
+    <value>_Назва</value>
   </data>
   <data name="Event_RemoveMethod" xml:space="preserve">
     <value>_Видалити</value>
-  </data>
-  <data name="Event_RTSpecialName" xml:space="preserve">
-    <value>_RTSpecialName</value>
-  </data>
-  <data name="Event_SpecialName" xml:space="preserve">
-    <value>_SpecialName</value>
-  </data>
-  <data name="FieldAccess_Assembly" xml:space="preserve">
-    <value>Збірка</value>
-  </data>
-  <data name="FieldAccess_Family" xml:space="preserve">
-    <value>Сімейство типів</value>
-  </data>
-  <data name="FieldAccess_FamilyAndAssembly" xml:space="preserve">
-    <value>Сімейство типів і збірка</value>
-  </data>
-  <data name="FieldAccess_FamilyOrAssembly" xml:space="preserve">
-    <value>Сімейство типів або збірка</value>
-  </data>
-  <data name="FieldAccess_Private" xml:space="preserve">
-    <value>Приватний</value>
-  </data>
-  <data name="FieldAccess_PrivateScope" xml:space="preserve">
-    <value>PrivateScope</value>
-  </data>
-  <data name="FieldAccess_Public" xml:space="preserve">
-    <value>Доступний</value>
   </data>
   <data name="FieldType" xml:space="preserve">
     <value>Тип поля: {0}</value>
@@ -448,29 +421,11 @@
   <data name="Field_Flags" xml:space="preserve">
     <value>Прапорці</value>
   </data>
-  <data name="Field_Flags_InitOnly" xml:space="preserve">
-    <value>_InitOnly</value>
-  </data>
-  <data name="Field_Flags_Literal" xml:space="preserve">
-    <value>_Literal</value>
-  </data>
-  <data name="Field_Flags_NotSerialized" xml:space="preserve">
-    <value>NotSeriali_zed</value>
-  </data>
-  <data name="Field_Flags_RTSpecialName" xml:space="preserve">
-    <value>R_TSpecialName</value>
-  </data>
-  <data name="Field_Flags_SpecialName" xml:space="preserve">
-    <value>S_pecialName</value>
-  </data>
-  <data name="Field_Flags_Static" xml:space="preserve">
-    <value>_Static</value>
-  </data>
   <data name="Field_InitialValue" xml:space="preserve">
     <value>Початкове значення</value>
   </data>
   <data name="Field_Name" xml:space="preserve">
-    <value>Назва</value>
+    <value>_Назва</value>
   </data>
   <data name="Field_Offset" xml:space="preserve">
     <value>Офсет</value>
@@ -497,7 +452,7 @@
     <value>Використовувати лише якщо заголовок метаданих версії 1.1 (0x0101). Інакше Тип ігнорується</value>
   </data>
   <data name="GP_Name" xml:space="preserve">
-    <value>Назва</value>
+    <value>_Назва</value>
   </data>
   <data name="GP_Number" xml:space="preserve">
     <value>Число</value>
@@ -547,16 +502,6 @@
   <data name="ImplMapTab" xml:space="preserve">
     <value>ImplMap</value>
   </data>
-  <data name="ImplMap_BestFit" xml:space="preserve">
-    <value>_BestFit</value>
-  </data>
-  <data name="ImplMap_CallingConvention" xml:space="preserve">
-    <value>CallCon_v</value>
-  </data>
-  <data name="ImplMap_CharacterSet" xml:space="preserve">
-    <value>Кодування
-</value>
-  </data>
   <data name="ImplMap_Enable" xml:space="preserve">
     <value>Дозволити</value>
   </data>
@@ -564,19 +509,7 @@
     <value>Модуль</value>
   </data>
   <data name="ImplMap_Name" xml:space="preserve">
-    <value>Назва</value>
-  </data>
-  <data name="ImplMap_NoMangle" xml:space="preserve">
-    <value>Без манглювання</value>
-  </data>
-  <data name="ImplMap_SupportsLastError" xml:space="preserve">
-    <value>Підтримує ОстаннюПомилку</value>
-  </data>
-  <data name="ImplMap_ThrowOn_SHORT" xml:space="preserve">
-    <value>_ThrowOn...</value>
-  </data>
-  <data name="ImplMap_ThrowOn_ToolTip" xml:space="preserve">
-    <value>ThrowOnUnmappableChar</value>
+    <value>_Назва</value>
   </data>
   <data name="MainTab" xml:space="preserve">
     <value>Головний</value>
@@ -675,7 +608,7 @@
     <value>Класс ініціалізації для ModuleRef</value>
   </data>
   <data name="MemberRef_Name" xml:space="preserve">
-    <value>Назва</value>
+    <value>_Назва</value>
   </data>
   <data name="MemberRef_Type" xml:space="preserve">
     <value>_Тип</value>
@@ -697,12 +630,6 @@
   </data>
   <data name="MethodSig_CallingConv" xml:space="preserve">
     <value>Дом. про виклик</value>
-  </data>
-  <data name="MethodSig_ExplicitThis" xml:space="preserve">
-    <value>E_xplicitThis</value>
-  </data>
-  <data name="MethodSig_HasThis" xml:space="preserve">
-    <value>_HasThis</value>
   </data>
   <data name="MethodSig_MethodParameterTypes" xml:space="preserve">
     <value>Типи параметрів методу</value>
@@ -759,7 +686,7 @@
     <value>O_ut</value>
   </data>
   <data name="ParamDef_Name" xml:space="preserve">
-    <value>Назва</value>
+    <value>_Назва</value>
   </data>
   <data name="ParamDef_Sequence" xml:space="preserve">
     <value>_Послідовність</value>
@@ -1617,9 +1544,6 @@
   <data name="MethodBody_KeepOldMaxStack_ToolTip" xml:space="preserve">
     <value>Не перераховувати значення MaxStack при збереженні файлу</value>
   </data>
-  <data name="MethodBody_LocalVariableSignatureToken" xml:space="preserve">
-    <value>_LocalVarSigTok</value>
-  </data>
   <data name="MethodBody_MaxStack" xml:space="preserve">
     <value>_MaxStack</value>
   </data>
@@ -1639,10 +1563,10 @@
     <value>Сігнатура</value>
   </data>
   <data name="Method_Name" xml:space="preserve">
-    <value>Назва</value>
+    <value>_Назва</value>
   </data>
   <data name="Module_DotNetVersion" xml:space="preserve">
-    <value>Версія .NET</value>
+    <value>В_ерсія .NET</value>
   </data>
   <data name="Module_EntryPoint" xml:space="preserve">
     <value>Точка входу</value>
@@ -1672,13 +1596,13 @@
     <value>Перемістити типи в пустий простір імен</value>
   </data>
   <data name="Namespace_Name" xml:space="preserve">
-    <value>Назва</value>
+    <value>_Назва</value>
   </data>
   <data name="NetModule_DotNetVersion" xml:space="preserve">
-    <value>Версія .NET</value>
+    <value>В_ерсія .NET</value>
   </data>
   <data name="NetModule_Name" xml:space="preserve">
-    <value>Назва</value>
+    <value>_Назва</value>
   </data>
   <data name="NodesUseHexEditorMsg" xml:space="preserve">
     <value>Всі нижчележачі вузли дерева використовують Hex-редактор для змін PE-файлу</value>
@@ -1714,7 +1638,7 @@
     <value>Getters</value>
   </data>
   <data name="Property_Name" xml:space="preserve">
-    <value>Назва</value>
+    <value>_Назва</value>
   </data>
   <data name="Property_OtherMethods" xml:space="preserve">
     <value>Інші методи</value>
@@ -1771,7 +1695,7 @@
     <value>_Data</value>
   </data>
   <data name="Resource_Name" xml:space="preserve">
-    <value>Назва</value>
+    <value>_Назва</value>
   </data>
   <data name="Resource_Size" xml:space="preserve">
     <value>_Размір</value>
@@ -1959,6 +1883,9 @@
   <data name="ShortCutKeyP" xml:space="preserve">
     <value>P</value>
   </data>
+  <data name="ShortCutKeyR" xml:space="preserve">
+    <value>R</value>
+  </data>
   <data name="ShortCutKeyS" xml:space="preserve">
     <value>S</value>
   </data>
@@ -2005,7 +1932,7 @@
     <value>Розмір к_ласу</value>
   </data>
   <data name="Type_Name" xml:space="preserve">
-    <value>Назва</value>
+    <value>_Назва</value>
   </data>
   <data name="Type_Namespace" xml:space="preserve">
     <value>Простір імен</value>
@@ -2109,98 +2036,8 @@
   <data name="Method_Access" xml:space="preserve">
     <value>Доступ</value>
   </data>
-  <data name="Method_CodeType" xml:space="preserve">
-    <value>Т_ип коду</value>
-  </data>
-  <data name="Method_Flags_Abstract" xml:space="preserve">
-    <value>_Abstract</value>
-  </data>
-  <data name="Method_Flags_CheckAccessOnOverride" xml:space="preserve">
-    <value>Chec_kAccessOnOverride</value>
-  </data>
-  <data name="Method_Flags_Final" xml:space="preserve">
-    <value>_Final</value>
-  </data>
-  <data name="Method_Flags_HideBySig" xml:space="preserve">
-    <value>Hi_deBySig</value>
-  </data>
-  <data name="Method_Flags_RequireSecObject" xml:space="preserve">
-    <value>Re_quireSecObject</value>
-  </data>
-  <data name="Method_Flags_RTSpecialName" xml:space="preserve">
-    <value>R_TSpecialName</value>
-  </data>
-  <data name="Method_Flags_SpecialName" xml:space="preserve">
-    <value>S_pecialName</value>
-  </data>
-  <data name="Method_Flags_Static" xml:space="preserve">
-    <value>_Static</value>
-  </data>
-  <data name="Method_Flags_UnmanagedExport" xml:space="preserve">
-    <value>UnmanagedE_xport</value>
-  </data>
-  <data name="Method_Flags_Virtual" xml:space="preserve">
-    <value>_Virtual</value>
-  </data>
-  <data name="Method_ImplFlags" xml:space="preserve">
-    <value>ImplFlags</value>
-  </data>
-  <data name="Method_ImplFlags_AggressiveInlining" xml:space="preserve">
-    <value>A_ggressiveInlining</value>
-  </data>
-  <data name="Method_ImplFlags_ForwardRef" xml:space="preserve">
-    <value>For_wardRef</value>
-  </data>
-  <data name="Method_ImplFlags_InternalCall" xml:space="preserve">
-    <value>Interna_lCall</value>
-  </data>
-  <data name="Method_ImplFlags_NoInlining" xml:space="preserve">
-    <value>No_Inlining</value>
-  </data>
-  <data name="Method_ImplFlags_NoOptimization" xml:space="preserve">
-    <value>NoOptimi_zation</value>
-  </data>
-  <data name="Method_ImplFlags_PreserveSig" xml:space="preserve">
-    <value>Prese_rveSig</value>
-  </data>
-  <data name="Method_ImplFlags_Synchronized" xml:space="preserve">
-    <value>Sync_hronized</value>
-  </data>
-  <data name="Method_ManagedType" xml:space="preserve">
-    <value>_ManagedType</value>
-  </data>
-  <data name="Method_VtableLayout" xml:space="preserve">
-    <value>Vta_bleLayout</value>
-  </data>
-  <data name="Module_Cor20" xml:space="preserve">
-    <value>Cor20</value>
-  </data>
   <data name="Module_Cor20_RuntimeVersion" xml:space="preserve">
     <value>Версія _Runtime</value>
-  </data>
-  <data name="Module_EncBaseId" xml:space="preserve">
-    <value>Enc_BaseId</value>
-  </data>
-  <data name="Module_EncId" xml:space="preserve">
-    <value>EncI_d</value>
-  </data>
-  <data name="Module_Flags_Bit32Preferred" xml:space="preserve">
-    <value>32-Bit _Preferred</value>
-  </data>
-  <data name="Module_Flags_Bit32Required" xml:space="preserve">
-    <value>_32-Bit Required</value>
-  </data>
-  <data name="Module_Flags_ILLibrary" xml:space="preserve">
-    <value>Біб_ліотека IL</value>
-  </data>
-  <data name="Module_Flags_ILOnly" xml:space="preserve">
-    <value>Тільки _IL</value>
-  </data>
-  <data name="Module_Flags_StrongNameSigned" xml:space="preserve">
-    <value>Підписано _сильним іменем</value>
-  </data>
-  <data name="Module_Flags_TrackDebugData" xml:space="preserve">
-    <value>В_ідслідковувати дебаг дані</value>
   </data>
   <data name="Module_Metadata_HeaderVersion" xml:space="preserve">
     <value>Версія _заголовку</value>
@@ -2208,23 +2045,8 @@
   <data name="Module_Metadata_VersionString" xml:space="preserve">
     <value>Стрічка _версії</value>
   </data>
-  <data name="Module_Mvid" xml:space="preserve">
-    <value>_Mvid</value>
-  </data>
-  <data name="Module_PE" xml:space="preserve">
-    <value>PE</value>
-  </data>
   <data name="Module_PE_Machine" xml:space="preserve">
     <value>_Архітектура</value>
-  </data>
-  <data name="NetModule_Mvid" xml:space="preserve">
-    <value>_Mvid</value>
-  </data>
-  <data name="PE_Header_Characteristics" xml:space="preserve">
-    <value>Характеристики</value>
-  </data>
-  <data name="PE_Header_DllCharacteristics" xml:space="preserve">
-    <value>Характеристики Dll</value>
   </data>
   <data name="Property_Flags_RTSpecialName" xml:space="preserve">
     <value>_RTSpecialName</value>
@@ -2234,24 +2056,6 @@
   </data>
   <data name="SaveModule_Cor20_EntryPoint" xml:space="preserve">
     <value>_Точка входу</value>
-  </data>
-  <data name="SaveModule_Cor20_Flags_Bit32Preferred" xml:space="preserve">
-    <value>32-Bit _Preferred</value>
-  </data>
-  <data name="SaveModule_Cor20_Flags_Bit32Required" xml:space="preserve">
-    <value>_32-Bit Required</value>
-  </data>
-  <data name="SaveModule_Cor20_Flags_ILLibrary" xml:space="preserve">
-    <value>Біб_ліотека IL</value>
-  </data>
-  <data name="SaveModule_Cor20_Flags_ILOnly" xml:space="preserve">
-    <value>Тільки _IL</value>
-  </data>
-  <data name="SaveModule_Cor20_Flags_StrongNameSigned" xml:space="preserve">
-    <value>Підписано _сильним іменем</value>
-  </data>
-  <data name="SaveModule_Cor20_Flags_TrackDebugData" xml:space="preserve">
-    <value>В_ідслідковувати дебаг дані</value>
   </data>
   <data name="SaveModule_Cor20_MajorRuntimeVersion" xml:space="preserve">
     <value>_Major RT Ver</value>
@@ -2303,54 +2107,6 @@
   </data>
   <data name="SaveModule_TablesHeap_UseENC" xml:space="preserve">
     <value>_Use #- Table</value>
-  </data>
-  <data name="Type_Flags_Abstract" xml:space="preserve">
-    <value>A_bstract</value>
-  </data>
-  <data name="Type_Flags_Accessibility" xml:space="preserve">
-    <value>Доступніст_ь</value>
-  </data>
-  <data name="Type_Flags_BeforeFieldInit" xml:space="preserve">
-    <value>BeforeFieldIni_t</value>
-  </data>
-  <data name="Type_Flags_Custom" xml:space="preserve">
-    <value>Custo_m</value>
-  </data>
-  <data name="Type_Flags_Forwarder" xml:space="preserve">
-    <value>_Forwarder</value>
-  </data>
-  <data name="Type_Flags_Import" xml:space="preserve">
-    <value>_Import</value>
-  </data>
-  <data name="Type_Flags_Kind" xml:space="preserve">
-    <value>_Тип</value>
-  </data>
-  <data name="Type_Flags_Layout" xml:space="preserve">
-    <value>Layo_ut</value>
-  </data>
-  <data name="Type_Flags_RTSpecialName" xml:space="preserve">
-    <value>_RTSpecialName</value>
-  </data>
-  <data name="Type_Flags_Sealed" xml:space="preserve">
-    <value>Seale_d</value>
-  </data>
-  <data name="Type_Flags_Semantics" xml:space="preserve">
-    <value>_Семантика</value>
-  </data>
-  <data name="Type_Flags_Serializable" xml:space="preserve">
-    <value>S_erializable</value>
-  </data>
-  <data name="Type_Flags_SpecialName" xml:space="preserve">
-    <value>S_pecialName</value>
-  </data>
-  <data name="Type_Flags_String" xml:space="preserve">
-    <value>Стріч_ка</value>
-  </data>
-  <data name="Type_Flags_Visibility" xml:space="preserve">
-    <value>Видиміст_ть</value>
-  </data>
-  <data name="Type_Flags_WindowsRuntime" xml:space="preserve">
-    <value>_WindowsRuntime</value>
   </data>
   <data name="CustomAttribute_NamedArg_Field" xml:space="preserve">
     <value>Поле</value>
@@ -2528,5 +2284,26 @@
   </data>
   <data name="CompilerDlgTabTitle" xml:space="preserve">
     <value>Компілятор</value>
+  </data>
+  <data name="ReplaceNopsInstrCommand" xml:space="preserve">
+    <value>_Замінити NOP-ами</value>
+  </data>
+  <data name="ReplaceNopsInstrsCommand" xml:space="preserve">
+    <value>_Замінити NOP-ами</value>
+  </data>
+  <data name="Type_Flags_Accessibility" xml:space="preserve">
+    <value>Доступніст_ь</value>
+  </data>
+  <data name="Type_Flags_Kind" xml:space="preserve">
+    <value>_Тип</value>
+  </data>
+  <data name="Type_Flags_Layout" xml:space="preserve">
+    <value>Layo_ut</value>
+  </data>
+  <data name="Type_Flags_String" xml:space="preserve">
+    <value>Стріч_ка</value>
+  </data>
+  <data name="Type_Flags_Visibility" xml:space="preserve">
+    <value>Видиміст_ть</value>
   </data>
 </root>

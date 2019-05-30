@@ -1,5 +1,5 @@
-﻿/*
-    Copyright (C) 2014-2018 de4dot@gmail.com
+/*
+    Copyright (C) 2014-2019 de4dot@gmail.com
 
     This file is part of dnSpy
 
@@ -36,5 +36,20 @@ namespace dnSpy.Contracts.Disassembly {
 		/// 64-bit x86 code
 		/// </summary>
 		X86_64,
+
+		/// <summary>
+		/// 32-bit ARM (thumb)
+		/// </summary>
+		ArmThumb,
+
+		/// <summary>
+		/// 32-bit ARM
+		/// </summary>
+		Arm,
+
+		/// <summary>
+		/// 64-bit ARM
+		/// </summary>
+		Arm64,
 	}
 }

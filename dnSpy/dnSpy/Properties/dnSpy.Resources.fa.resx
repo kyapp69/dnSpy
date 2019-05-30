@@ -480,12 +480,6 @@
   <data name="Options_Misc_Button_EnableAllWarnings" xml:space="preserve">
     <value>فعالسازی تمام پیغام‌های خطا</value>
   </data>
-  <data name="Options_Misc_Deserialize" xml:space="preserve">
-    <value>نامرتب سازی تایپ ها در ریسورس (ناامن)</value>
-  </data>
-  <data name="Options_Misc_Deserialize_ToolTip" xml:space="preserve">
-    <value>هر سمبلی می تواند با داده از ریسورس بارگذاری و اجرا شود.</value>
-  </data>
   <data name="Options_Misc_UseMmapdIO" xml:space="preserve">
     <value>استفاده از memory mapped I/O</value>
   </data>
@@ -722,18 +716,6 @@
   </data>
   <data name="ToolWindowWinPosButtonToolTip" xml:space="preserve">
     <value>موقعیت پنجره</value>
-  </data>
-  <data name="UseNewRendererHeader" xml:space="preserve">
-    <value>استفاده از قالب متن جدید</value>
-  </data>
-  <data name="UseNewRendererInfo" xml:space="preserve">
-    <value>قالب متن جدید سریع تر است اما از warp کردن متن و حروف unicode پشتیبانی نمی کند.</value>
-  </data>
-  <data name="UseNewRenderer_HexEditor" xml:space="preserve">
-    <value>ویرایشگر Hex</value>
-  </data>
-  <data name="UseNewRenderer_TextEditor" xml:space="preserve">
-    <value>ویرایشگر متن</value>
   </data>
   <data name="Theme_Blue" xml:space="preserve">
     <value>_آبی</value>
@@ -1962,11 +1944,11 @@
   <data name="DisassemblySettings_ScaleBeforeIndex" xml:space="preserve">
     <value>Show scale before index register</value>
   </data>
-  <data name="DisassemblySettings_ShortBranchNumbers" xml:space="preserve">
-    <value>اعداد کوتاه (شاخه ها)</value>
+  <data name="DisassemblySettings_BranchLeadingZeroes" xml:space="preserve">
+    <value>Add leading zeroes (branches)</value>
   </data>
-  <data name="DisassemblySettings_ShortNumbers" xml:space="preserve">
-    <value>اعداد کوتاه</value>
+  <data name="DisassemblySettings_LeadingZeroes" xml:space="preserve">
+    <value>Add leading zeroes</value>
   </data>
   <data name="DisassemblySettings_ShowBranchSize" xml:space="preserve">
     <value>نمایش اندازه شاخه</value>
@@ -2048,5 +2030,14 @@
   </data>
   <data name="Disassembly_MethodIsNotOptimized" xml:space="preserve">
     <value>متود بهینه نشده است</value>
+  </data>
+  <data name="DisassemblySettings_ShowSymbolAddress" xml:space="preserve">
+    <value>Show symbol address</value>
+  </data>
+  <data name="Decompile_Timestamp" xml:space="preserve">
+    <value>برچسب زمان:</value>
+  </data>
+  <data name="UnknownValue" xml:space="preserve">
+    <value>&lt;نامشخص&gt;</value>
   </data>
 </root>

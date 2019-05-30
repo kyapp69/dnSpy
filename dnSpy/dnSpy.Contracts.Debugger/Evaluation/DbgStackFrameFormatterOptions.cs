@@ -1,5 +1,5 @@
-﻿/*
-    Copyright (C) 2014-2018 de4dot@gmail.com
+/*
+    Copyright (C) 2014-2019 de4dot@gmail.com
 
     This file is part of dnSpy
 
@@ -89,5 +89,10 @@ namespace dnSpy.Contracts.Debugger.Evaluation {
 		/// Use digit separators
 		/// </summary>
 		DigitSeparators			= 0x00000800,
+
+		/// <summary>
+		/// Show the full string value even if it's a very long string
+		/// </summary>
+		FullString				= 0x00001000,
 	}
 }

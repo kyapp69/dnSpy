@@ -1,5 +1,5 @@
-﻿/*
-    Copyright (C) 2014-2018 de4dot@gmail.com
+/*
+    Copyright (C) 2014-2019 de4dot@gmail.com
 
     This file is part of dnSpy
 
@@ -166,6 +166,7 @@ namespace dnSpy.Decompiler.ILSpy.Settings {
 			if (g.ForceShowAllMembers != d.ForceShowAllMembers) flags |= RefreshFlags.CSharp | RefreshFlags.ShowMember;
 			if (g.SortSystemUsingStatementsFirst != d.SortSystemUsingStatementsFirst) flags |= RefreshFlags.CSharp;
 			if (g.MaxArrayElements != d.MaxArrayElements) flags |= RefreshFlags.CSharp;
+			if (g.MaxStringLength != d.MaxStringLength) flags |= RefreshFlags.CSharp;
 			if (g.SortCustomAttributes != d.SortCustomAttributes) flags |= RefreshFlags.CSharp;
 			if (g.UseSourceCodeOrder != d.UseSourceCodeOrder) flags |= RefreshFlags.CSharp;
 			if (g.AllowFieldInitializers != d.AllowFieldInitializers) flags |= RefreshFlags.CSharp;

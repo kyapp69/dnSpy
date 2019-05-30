@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <root>
   <!-- 
     Microsoft ResX Schema 
@@ -136,16 +136,16 @@
     <value>Ви бажаєте видалити усі точки зупинки?</value>
   </data>
   <data name="AttachToProcessCommand" xml:space="preserve">
-    <value>Приєднатись до Процесу...</value>
+    <value>Приєднатись до _Процесу...</value>
   </data>
   <data name="Attach_AttachToProcess" xml:space="preserve">
     <value>Приєднатись до Процесу</value>
   </data>
   <data name="Attach_UseDnSpy32" xml:space="preserve">
-    <value>Використовуйте dnSpy.exe для приєднання до 64-біт процесів</value>
+    <value>Використовуйте 64-біт dnSpy для приєднання до 64-біт процесів</value>
   </data>
   <data name="Attach_UseDnSpy64" xml:space="preserve">
-    <value>Використовуйте dnSpy-x86.exe для приєднання до 32-біт процесів</value>
+    <value>Використовуйте 32-біт dnSpy для приєднання до 32-біт процесів</value>
   </data>
   <data name="BreakCommand" xml:space="preserve">
     <value>Перервати Усе</value>
@@ -264,8 +264,8 @@
   <data name="DbgSettings_AutoOpenLocalsWindow" xml:space="preserve">
     <value>Показати вікно локальних змінних при старті дебагера</value>
   </data>
-  <data name="DbgSettings_DisableManagedDebuggerDetection" xml:space="preserve">
-    <value>Заборонити коду визначати managed debugger</value>
+  <data name="DbgSettings_DisableDebuggerDetection" xml:space="preserve">
+    <value>Заборонити коду виявляти дебагер</value>
   </data>
   <data name="DbgSettings_IgnoreBreakInstructions" xml:space="preserve">
     <value>Ігнорувати Debugger.Break() та інші операції зупинок</value>
@@ -816,7 +816,7 @@
     <value>_Вікна</value>
   </data>
   <data name="OutputCommand" xml:space="preserve">
-    <value>Вив_ід</value>
+    <value>_Вивід</value>
   </data>
   <data name="ShortCutKeyCtrlAltW_DIGIT" xml:space="preserve">
     <value>Ctrl+Alt+W, {0}</value>
@@ -933,7 +933,7 @@
     <value>Виключення</value>
   </data>
   <data name="FindCommand" xml:space="preserve">
-    <value>Пошук</value>
+    <value>_Пошук</value>
   </data>
   <data name="Exceptions_NoMatch" xml:space="preserve">
     <value>Немає типів виключень, що відповідають умові пошуку.</value>
@@ -1501,5 +1501,26 @@
   </data>
   <data name="ShortCutKeyAlt8" xml:space="preserve">
     <value>Alt+8</value>
+  </data>
+  <data name="DbgSettings_IgnoreUnhandledExceptions" xml:space="preserve">
+    <value>Ігнорувати необроблені виключення</value>
+  </data>
+  <data name="RunWithInvalidExtension" xml:space="preserve">
+    <value>Ви впевнені, що бажаєте запустити цей файл без вірного розширення?</value>
+  </data>
+  <data name="DebugWithInvalidExtension" xml:space="preserve">
+    <value>Ви впевнені, що хочете відлагоджувати файл без вірного розширення?</value>
+  </data>
+  <data name="Processes_NoMatch" xml:space="preserve">
+    <value>Жоден процесс не відповідає пошуковому запиту.</value>
+  </data>
+  <data name="Processes_Search" xml:space="preserve">
+    <value>Пошук</value>
+  </data>
+  <data name="Processes_ResetSearchSettings_ToolTip" xml:space="preserve">
+    <value>Скинути усі критерії пошуку та показати усі процеси</value>
+  </data>
+  <data name="Processes_Search_ToolTip" xml:space="preserve">
+    <value>Пошук процесу</value>
   </data>
 </root>

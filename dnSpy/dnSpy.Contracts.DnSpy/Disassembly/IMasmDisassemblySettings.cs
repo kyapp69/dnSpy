@@ -1,5 +1,5 @@
-﻿/*
-    Copyright (C) 2014-2018 de4dot@gmail.com
+/*
+    Copyright (C) 2014-2019 de4dot@gmail.com
 
     This file is part of dnSpy
 
@@ -21,6 +21,20 @@ namespace dnSpy.Contracts.Disassembly {
 	/// <summary>
 	/// masm disassembly settings
 	/// </summary>
-	public interface IMasmDisassemblySettings : IDisassemblySettings {
+	public interface IMasmDisassemblySettings : IX86DisassemblySettings {
+		/// <summary>
+		/// Add a DS segment override even if it's not present. Used if it's 16/32-bit code and mem op is a displ, eg. 'mov eax,[12345678]' vs 'mov eax,ds:[12345678]'
+		/// </summary>
+		bool AddDsPrefix32 { get; set; }
+
+		/// <summary>
+		/// Show symbols in brackets, eg. '[ecx+symbol]' vs 'symbol[ecx]' and '[symbol]' vs 'symbol'
+		/// </summary>
+		bool SymbolDisplInBrackets { get; set; }
+
+		/// <summary>
+		/// Show displacements in brackets, eg. '[ecx+1234h]' vs '1234h[ecx]'
+		/// </summary>
+		bool DisplInBrackets { get; set; }
 	}
 }

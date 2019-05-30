@@ -12,7 +12,13 @@
     <AssemblyOriginatorKeyFile>..\..\..\dnSpy.snk</AssemblyOriginatorKeyFile>
     <OutputPath>..\..\..\dnSpy\dnSpy\bin\$(Configuration)\</OutputPath>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <UseWPF>true</UseWPF>
   </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Include="..\dnSpy.Debugger\Shared\Dispatcher.cs" Link="Shared\Dispatcher.cs" />
+    <Compile Include="..\dnSpy.Debugger\Shared\FileUtilities.cs" Link="Shared\FileUtilities.cs" />
+  </ItemGroup>
 
   <ItemGroup>
     <Compile Update="Properties\dnSpy.Debugger.DotNet.Mono.Resources.Designer.cs">
@@ -35,7 +41,6 @@
     <ProjectReference Include="..\..\..\dnSpy\dnSpy.Contracts.Debugger\dnSpy.Contracts.Debugger.csproj" />
     <ProjectReference Include="..\..\..\dnSpy\dnSpy.Contracts.DnSpy\dnSpy.Contracts.DnSpy.csproj" />
     <ProjectReference Include="..\..\..\dnSpy\dnSpy.Contracts.Logic\dnSpy.Contracts.Logic.csproj" />
-    <ProjectReference Include="..\..\..\Libraries\dnlib\src\dnlib.csproj" />
     <ProjectReference Include="..\dnSpy.Debugger.DotNet.Metadata\dnSpy.Debugger.DotNet.Metadata.csproj" />
     <ProjectReference Include="..\Mono.Debugger.Soft\Mono.Debugger.Soft.csproj" />
   </ItemGroup>
@@ -43,7 +48,6 @@
   <ItemGroup Condition=" '$(IsDotNetFramework)' == 'true' ">
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
-    <Reference Include="System.ComponentModel.Composition" />
     <Reference Include="System.Xaml" />
     <Reference Include="WindowsBase" />
   </ItemGroup>

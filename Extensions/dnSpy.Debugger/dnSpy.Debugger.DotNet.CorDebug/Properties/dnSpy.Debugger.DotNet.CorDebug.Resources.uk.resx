@@ -118,10 +118,10 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="DbgAsm_Args" xml:space="preserve">
-    <value>Аргументи</value>
+    <value>А_ргументи</value>
   </data>
   <data name="DbgAsm_Assembly" xml:space="preserve">
-    <value>Збірка</value>
+    <value>_Збірка</value>
   </data>
   <data name="DbgAsm_BreakAt" xml:space="preserve">
     <value>_Зупинитись на</value>
@@ -130,7 +130,7 @@
     <value>_Host</value>
   </data>
   <data name="DbgAsm_HostArgs" xml:space="preserve">
-    <value>Аргументи Хоста</value>
+    <value>Ар_гументи Хоста</value>
   </data>
   <data name="DbgAsm_WorkingDir" xml:space="preserve">
     <value>_Робоча Директорія</value>
@@ -139,10 +139,10 @@
     <value>Створити процес</value>
   </data>
   <data name="DbgBreak_Dont" xml:space="preserve">
-    <value>Не зупиняти</value>
+    <value>Не Зупиняти</value>
   </data>
   <data name="DbgBreak_EntryPoint" xml:space="preserve">
-    <value>Точка входу</value>
+    <value>Точка Входу</value>
   </data>
   <data name="Error_CouldNotFindDotNetCoreHost" xml:space="preserve">
     <value>Не знайдений хост .NET Core '{0}'</value>
@@ -195,10 +195,10 @@
     <value>WaitSleepJoin</value>
   </data>
   <data name="UseDnSpy64ExeToDebug32" xml:space="preserve">
-    <value>Для відладки 32-бітних програм використовуйте dnSpy-x86.exe.</value>
+    <value>Для відладки 32-бітних програм використовуйте 32-біт dnSpy.</value>
   </data>
   <data name="UseDnSpyExeToDebug64" xml:space="preserve">
-    <value>Для відладки 64-бітних програм використовуйте dnSpy.exe.</value>
+    <value>Для відладки 64-бітних програм використовуйте 64-біт dnSpy.</value>
   </data>
   <data name="ExceptionMessageIsNull" xml:space="preserve">
     <value>«&lt;повідомлення без виключення&gt;»</value>
@@ -273,5 +273,8 @@
 
 HR: 0x{0:X8}
 Помилка: 0x{1:X8}</value>
+  </data>
+  <data name="DbgAsm_UseHostExecutable" xml:space="preserve">
+    <value>Використовувати виконавчий файл хоста</value>
   </data>
 </root>

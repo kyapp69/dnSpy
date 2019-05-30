@@ -1,5 +1,5 @@
-﻿/*
-    Copyright (C) 2014-2018 de4dot@gmail.com
+/*
+    Copyright (C) 2014-2019 de4dot@gmail.com
 
     This file is part of dnSpy
 
@@ -20,7 +20,7 @@
 using dnSpy.Contracts.Images;
 using Microsoft.VisualStudio.Language.Intellisense;
 
-namespace dnSpy.Contracts.DnSpy.Language.Intellisense {
+namespace dnSpy.Contracts.Language.Intellisense {
 	/// <summary>
 	/// Completion icon
 	/// </summary>

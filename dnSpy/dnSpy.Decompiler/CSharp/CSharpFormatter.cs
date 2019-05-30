@@ -1,5 +1,5 @@
-﻿/*
-    Copyright (C) 2014-2018 de4dot@gmail.com
+/*
+    Copyright (C) 2014-2019 de4dot@gmail.com
 
     This file is part of dnSpy
 
@@ -884,7 +884,7 @@ namespace dnSpy.Decompiler.CSharp {
 					type = type.Next;
 				}
 				if (list != null) {
-					Write(list[list.Count - 1].Next, typeGenArgs, methGenArgs);
+					Write(list[list.Count - 1].Next, typeGenArgs, Array.Empty<TypeSig>());
 					foreach (var aryType in list) {
 						if (aryType.ElementType == ElementType.Array) {
 							OutputWrite(ArrayParenOpen, BoxedTextColor.Punctuation);

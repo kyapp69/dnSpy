@@ -1,5 +1,5 @@
-﻿/*
-    Copyright (C) 2014-2018 de4dot@gmail.com
+/*
+    Copyright (C) 2014-2019 de4dot@gmail.com
 
     This file is part of dnSpy
 
@@ -61,7 +61,7 @@ namespace dnSpy.Contracts.Hex.Files.PE {
 			formatter.WriteUInt32(ReadValue());
 			formatter.WriteSpace();
 			formatter.Write("(", PredefinedClassifiedTextTags.Punctuation);
-			formatter.Write(ReadDateTime().ToString(CultureInfo.CurrentCulture.DateTimeFormat), PredefinedClassifiedTextTags.Text);
+			formatter.Write(ReadDateTime().ToLocalTime().ToString(CultureInfo.CurrentCulture.DateTimeFormat), PredefinedClassifiedTextTags.Text);
 			formatter.Write(")", PredefinedClassifiedTextTags.Punctuation);
 		}
 	}

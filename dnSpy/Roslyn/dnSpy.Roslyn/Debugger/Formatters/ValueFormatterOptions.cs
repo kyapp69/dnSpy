@@ -1,5 +1,5 @@
-﻿/*
-    Copyright (C) 2014-2018 de4dot@gmail.com
+/*
+    Copyright (C) 2014-2019 de4dot@gmail.com
 
     This file is part of dnSpy
 
@@ -33,5 +33,6 @@ namespace dnSpy.Roslyn.Debugger.Formatters {
 		DigitSeparators				= 0x00000080,
 		NoStringQuotes				= 0x00000100,
 		NoDebuggerDisplay			= 0x00000200,
+		FullString					= 0x00000400,
 	}
 }

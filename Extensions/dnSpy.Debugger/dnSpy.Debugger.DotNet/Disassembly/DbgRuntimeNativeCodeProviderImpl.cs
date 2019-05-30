@@ -1,5 +1,5 @@
-﻿/*
-    Copyright (C) 2014-2018 de4dot@gmail.com
+/*
+    Copyright (C) 2014-2019 de4dot@gmail.com
 
     This file is part of dnSpy
 
@@ -59,8 +59,11 @@ namespace dnSpy.Debugger.DotNet.Disassembly {
 
 			public DotNetSymbolResolver(IDbgDotNetRuntime runtime) => this.runtime = runtime;
 
-			public void Resolve(ulong[] addresses, SymbolResolverResult[] result) =>
-				runtime.Dispatcher.Invoke(() => ResolveCore(addresses, result));
+			public void Resolve(ulong[] addresses, SymbolResolverResult[] result) {
+				if (!runtime.Dispatcher.TryInvoke(() => ResolveCore(addresses, result))) {
+					// process has exited
+				}
+			}
 
 			void ResolveCore(ulong[] addresses, SymbolResolverResult[] result) {
 				Debug.Assert(addresses.Length == result.Length);
@@ -149,7 +152,7 @@ namespace dnSpy.Debugger.DotNet.Disassembly {
 				}
 			}
 
-			var newCode = new NativeCode(nativeCode.Kind, nativeCode.Optimization, newBlocks, nativeCode.CodeInfo, nativeVariableInfo, nativeCode.MethodName);
+			var newCode = new NativeCode(nativeCode.Kind, nativeCode.Optimization, newBlocks, nativeCode.CodeInfo, nativeVariableInfo, nativeCode.MethodName, nativeCode.ModuleName);
 			var symbolResolver = new DotNetSymbolResolver(runtime);
 			result = new GetNativeCodeResult(newCode, symbolResolver, header);
 			return true;

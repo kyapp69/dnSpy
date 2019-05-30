@@ -1,5 +1,5 @@
-﻿/*
-    Copyright (C) 2014-2018 de4dot@gmail.com
+/*
+    Copyright (C) 2014-2019 de4dot@gmail.com
 
     This file is part of dnSpy
 
@@ -31,8 +31,8 @@ using dnSpy.Contracts.Debugger.Breakpoints.Code.Dialogs;
 using dnSpy.Contracts.Debugger.CallStack;
 using dnSpy.Contracts.Debugger.Code;
 using dnSpy.Contracts.Debugger.Evaluation;
+using dnSpy.Contracts.Debugger.Text;
 using dnSpy.Contracts.Documents;
-using dnSpy.Contracts.Text;
 using dnSpy.Debugger.Breakpoints.Code;
 using dnSpy.Debugger.Disassembly;
 using dnSpy.Debugger.Properties;
@@ -131,12 +131,31 @@ namespace dnSpy.Debugger.ToolWindows.CallStack {
 
 		public override bool CanCopy => SelectedItems.Count != 0;
 		public override void Copy() {
-			var output = new StringBuilderTextColorOutput();
+			var output = new DbgStringBuilderTextWriter();
 			foreach (var vm in SortedSelectedItems) {
 				var formatter = vm.Context.Formatter;
-				formatter.WriteImage(output, vm);
-				output.Write(BoxedTextColor.Text, "\t");
-				formatter.WriteName(output, vm);
+				bool needTab = false;
+				foreach (var column in callStackVM.Descs.Columns) {
+					if (!column.IsVisible)
+						continue;
+
+					if (needTab)
+						output.Write(DbgTextColor.Text, "\t");
+					switch (column.Id) {
+					case CallStackWindowColumnIds.Icon:
+						formatter.WriteImage(output, vm);
+						break;
+
+					case CallStackWindowColumnIds.Name:
+						formatter.WriteName(output, vm);
+						break;
+
+					default:
+						throw new InvalidOperationException();
+					}
+
+					needTab = true;
+				}
 				output.WriteLine();
 			}
 			var s = output.ToString();

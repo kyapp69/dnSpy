@@ -1,5 +1,5 @@
-﻿/*
-    Copyright (C) 2014-2018 de4dot@gmail.com
+/*
+    Copyright (C) 2014-2019 de4dot@gmail.com
 
     This file is part of dnSpy
 
@@ -29,7 +29,7 @@ using dnSpy.Contracts.Debugger.DotNet.Evaluation.ValueNodes;
 using dnSpy.Contracts.Debugger.DotNet.Text;
 using dnSpy.Contracts.Debugger.Engine.Evaluation;
 using dnSpy.Contracts.Debugger.Evaluation;
-using dnSpy.Contracts.Text;
+using dnSpy.Contracts.Debugger.Text;
 using dnSpy.Debugger.DotNet.Metadata;
 using dnSpy.Roslyn.Properties;
 
@@ -317,7 +317,7 @@ namespace dnSpy.Roslyn.Debugger.ValueNodes {
 			}
 			return res;
 		}
-		static readonly DbgDotNetText errorPropertyName = new DbgDotNetText(new DbgDotNetTextPart(BoxedTextColor.InstanceProperty, dnSpy_Roslyn_Resources.DebuggerVarsWindow_Error_PropertyName));
+		static readonly DbgDotNetText errorPropertyName = new DbgDotNetText(new DbgDotNetTextPart(DbgTextColor.InstanceProperty, dnSpy_Roslyn_Resources.DebuggerVarsWindow_Error_PropertyName));
 
 		void UpdateFormatSpecifiers(DbgDotNetValueNode valueNode, ReadOnlyCollection<string> formatSpecifiers) =>
 			(valueNode as DbgDotNetValueNodeImpl)?.SetFormatSpecifiers(formatSpecifiers);

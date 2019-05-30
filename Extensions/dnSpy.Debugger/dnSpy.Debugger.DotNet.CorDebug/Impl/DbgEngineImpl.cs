@@ -1,5 +1,5 @@
-﻿/*
-    Copyright (C) 2014-2018 de4dot@gmail.com
+/*
+    Copyright (C) 2014-2019 de4dot@gmail.com
 
     This file is part of dnSpy
 
@@ -288,8 +288,14 @@ namespace dnSpy.Debugger.DotNet.CorDebug.Impl {
 		}
 
 		DbgModule TryGetModule(CorFrame frame, CorThread thread) {
-			if (frame == null)
-				frame = thread?.ActiveFrame ?? thread?.AllFrames.FirstOrDefault();
+			if (frame?.Function == null && thread != null) {
+				frame = thread.ActiveFrame;
+				if (frame?.Function == null) {
+					// Ignore the first frame(s) that have a null function. This rarely happens (eg. it
+					// happens when debugging dnSpy built for .NET Core x86)
+					frame = thread.AllFrames.FirstOrDefault(a => a.Function != null);
+				}
+			}
 			return TryGetModule(frame?.Function?.Module);
 		}
 
@@ -647,9 +653,22 @@ namespace dnSpy.Debugger.DotNet.CorDebug.Impl {
 					throw new InvalidOperationException("Dispatcher has shut down");
 
 				var env = new DbgEnvironment(options.Environment);
-				if (!debuggerSettings.EnableManagedDebuggingAssistants) {
+				bool disableMDA = !debuggerSettings.EnableManagedDebuggingAssistants;
+				// If 32-bit .NET Framework and MDAs are enabled, pinvoke methods are called from clr.dll
+				// which breaks anti-IsDebuggerPresent() code. Our workaround is to disable MDAs.
+				// We can only debug processes with the same bitness, so check IntPtr.Size.
+				if (IntPtr.Size == 4 && debuggerSettings.AntiIsDebuggerPresent && options is DotNetFrameworkStartDebuggingOptions)
+					disableMDA = true;
+				// .NET Core doesn't support MDAs
+				if (options is DotNetCoreStartDebuggingOptions)
+					disableMDA = false;
+				if (disableMDA) {
 					// https://docs.microsoft.com/en-us/dotnet/framework/debug-trace-profile/diagnosing-errors-with-managed-debugging-assistants
 					env.Add("COMPLUS_MDA", "0");
+				}
+				if (debuggerSettings.SuppressJITOptimization_SystemModules) {
+					env.Add("COMPlus_ZapDisable", "1");
+					env.Add("COMPlus_ReadyToRun", "0");
 				}
 
 				var dbgOptions = new DebugProcessOptions(CreateDebugInfo(options)) {
@@ -669,8 +688,6 @@ namespace dnSpy.Debugger.DotNet.CorDebug.Impl {
 				if (dbgOptions.RedirectConsoleOutput)
 					dnDebugger.OnRedirectedOutput += DnDebugger_OnRedirectedOutput;
 				OnDebugProcess(dnDebugger);
-				if (debuggerSettings.PreventManagedDebuggerDetection)
-					PreventManagedDebuggerDetection.Initialize(dnDebugger);
 				HookDnDebuggerEvents();
 				return;
 			}
@@ -678,7 +695,16 @@ namespace dnSpy.Debugger.DotNet.CorDebug.Impl {
 				var cex = ex as COMException;
 				const int ERROR_NOT_SUPPORTED = unchecked((int)0x80070032);
 				string errMsg;
-				if (cex != null && cex.ErrorCode == ERROR_NOT_SUPPORTED)
+				if (ex is StartDebuggerException sde) {
+					switch (sde.Error) {
+					case StartDebuggerError.UnsupportedBitness:
+						errMsg = string.Format(dnSpy_Debugger_DotNet_CorDebug_Resources.Error_CouldNotStartDebugger, GetIncompatiblePlatformErrorMessage());
+						break;
+					default:
+						throw new InvalidOperationException();
+					}
+				}
+				else if (cex != null && cex.ErrorCode == ERROR_NOT_SUPPORTED)
 					errMsg = string.Format(dnSpy_Debugger_DotNet_CorDebug_Resources.Error_CouldNotStartDebugger, GetIncompatiblePlatformErrorMessage());
 				else if (cex != null && cex.ErrorCode == CordbgErrors.CORDBG_E_UNCOMPATIBLE_PLATFORMS)
 					errMsg = string.Format(dnSpy_Debugger_DotNet_CorDebug_Resources.Error_CouldNotStartDebugger, GetIncompatiblePlatformErrorMessage());
@@ -725,8 +751,6 @@ namespace dnSpy.Debugger.DotNet.CorDebug.Impl {
 				if (dnDebugger.Processes.Length == 0)
 					throw new ErrorException(string.Format(dnSpy_Debugger_DotNet_CorDebug_Resources.Error_CouldNotAttachToProcess, $"PID={options.ProcessId.ToString()}"));
 				OnDebugProcess(dnDebugger);
-				if (debuggerSettings.PreventManagedDebuggerDetection)
-					PreventManagedDebuggerDetection.Initialize(dnDebugger);
 				HookDnDebuggerEvents();
 				return;
 			}
@@ -835,8 +859,12 @@ namespace dnSpy.Debugger.DotNet.CorDebug.Impl {
 
 			if (dnDebugger.ProcessState == DebuggerProcessState.Running) {
 				int hr = dnDebugger.TryBreakProcesses();
-				if (hr < 0)
+				if (hr < 0) {
+					// We also sometimes get 0x80070005 before the process is terminated
+					if (hr == CordbgErrors.CORDBG_E_PROCESS_TERMINATED)
+						return;
 					SendMessage(new DbgMessageBreak(string.Format(dnSpy_Debugger_DotNet_CorDebug_Resources.Error_CouldNotBreakProcess, hr), GetMessageFlags()));
+				}
 				else {
 					Debug.Assert(dnDebugger.ProcessState == DebuggerProcessState.Paused);
 					// The debugger just picks the first thread in the first AppDomain, and this isn't

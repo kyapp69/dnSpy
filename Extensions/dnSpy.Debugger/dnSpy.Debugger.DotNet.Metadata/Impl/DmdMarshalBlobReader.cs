@@ -1,5 +1,5 @@
-﻿/*
-    Copyright (C) 2014-2018 de4dot@gmail.com
+/*
+    Copyright (C) 2014-2019 de4dot@gmail.com
 
     This file is part of dnSpy
 
@@ -83,7 +83,7 @@ namespace dnSpy.Debugger.DotNet.Metadata.Impl {
 					var guid = ReadUTF8String();
 					var nativeTypeName = ReadUTF8String();
 					var custMarshalerName = ReadUTF8String();
-					var cmRef = DmdTypeNameParser.Parse(module, custMarshalerName, genericTypeArguments);
+					var cmRef = custMarshalerName.Length == 0 ? null : DmdTypeNameParser.Parse(module, custMarshalerName, genericTypeArguments);
 					var cookie = ReadUTF8String();
 					return DmdMarshalType.CreateCustomMarshaler(custMarshalerName, cmRef, cookie);
 

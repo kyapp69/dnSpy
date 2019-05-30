@@ -1,5 +1,5 @@
-﻿/*
-    Copyright (C) 2014-2018 de4dot@gmail.com
+/*
+    Copyright (C) 2014-2019 de4dot@gmail.com
 
     This file is part of dnSpy
 
@@ -19,6 +19,7 @@
 
 namespace dnSpy.Roslyn.Debugger.Formatters {
 	static class ValueFormatterUtils {
+		public const int MaxStringLength = 256 * 1024;
 		public const int DigitGroupSizeHex = 4;
 		public const int DigitGroupSizeDecimal = 3;
 		public const string DigitSeparator = "_";
