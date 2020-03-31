@@ -18,6 +18,8 @@
 */
 
 using System;
+using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using dnlib.DotNet;
 using dnlib.PE;
@@ -26,20 +28,20 @@ using dnSpy.Contracts.Text;
 
 namespace dnSpy.Contracts.Documents.TreeView {
 	/// <summary>
-	/// Node printer
+	/// Node formatter
 	/// </summary>
-	public readonly struct NodePrinter {
-		static bool IsExe(ModuleDef mod) => mod != null && (mod.Characteristics & Characteristics.Dll) == 0;
-		static bool IsExe(IPEImage peImage) => peImage != null && (peImage.ImageNTHeaders.FileHeader.Characteristics & Characteristics.Dll) == 0;
+	public readonly struct NodeFormatter {
+		static bool IsExe(ModuleDef? mod) => !(mod is null) && (mod.Characteristics & Characteristics.Dll) == 0;
+		static bool IsExe(IPEImage? peImage) => !(peImage is null) && (peImage.ImageNTHeaders.FileHeader.Characteristics & Characteristics.Dll) == 0;
 
 		static string GetFilename(IDsDocument document) {
-			string filename = null;
+			string? filename = null;
 			try {
 				filename = Path.GetFileName(document.Filename);
 			}
 			catch (ArgumentException) {
 			}
-			if (string.IsNullOrEmpty(filename))
+			if (string2.IsNullOrEmpty(filename))
 				filename = document.GetShortName();
 			return filename;
 		}
@@ -61,7 +63,7 @@ namespace dnSpy.Contracts.Documents.TreeView {
 		public void Write(ITextColorWriter output, IDecompiler decompiler, IDsDocument document) {
 			var filename = GetFilename(document);
 			var peImage = document.PEImage;
-			if (peImage != null)
+			if (!(peImage is null))
 				output.Write(IsExe(peImage) ? BoxedTextColor.AssemblyExe : BoxedTextColor.Assembly, NameUtilities.CleanName(filename));
 			else
 				output.Write(BoxedTextColor.Text, NameUtilities.CleanName(filename));
@@ -227,12 +229,24 @@ namespace dnSpy.Contracts.Documents.TreeView {
 		/// <param name="decompiler">Decompiler</param>
 		/// <param name="field">Field</param>
 		/// <param name="showToken">true to write tokens</param>
-		public void Write(ITextColorWriter output, IDecompiler decompiler, FieldDef field, bool showToken) {
+		public void Write(ITextColorWriter output, IDecompiler decompiler, FieldDef field, bool showToken) => WriteField(output, decompiler, field, showToken);
+
+		/// <summary>
+		/// Writes a method
+		/// </summary>
+		/// <param name="output">Output</param>
+		/// <param name="decompiler">Decompiler</param>
+		/// <param name="field">Field</param>
+		/// <param name="showToken">true to write tokens</param>
+		public void WriteField(ITextColorWriter output, IDecompiler decompiler, IField field, bool showToken) {
 			output.Write(decompiler.MetadataTextColorProvider.GetColor(field), NameUtilities.CleanIdentifier(field.Name));
 			output.WriteSpace();
 			output.Write(BoxedTextColor.Punctuation, ":");
 			output.WriteSpace();
-			decompiler.WriteType(output, field.FieldType.ToTypeDefOrRef(), false);
+			if (field.FieldSig?.Type.ToTypeDefOrRef() is ITypeDefOrRef fieldType)
+				decompiler.WriteType(output, fieldType, false);
+			else
+				output.Write(BoxedTextColor.Error, "???");
 			WriteToken(output, field, showToken);
 		}
 
@@ -243,17 +257,59 @@ namespace dnSpy.Contracts.Documents.TreeView {
 		/// <param name="decompiler">Decompiler</param>
 		/// <param name="method">Method</param>
 		/// <param name="showToken">true to write tokens</param>
-		public void Write(ITextColorWriter output, IDecompiler decompiler, MethodDef method, bool showToken) {
-			output.Write(decompiler.MetadataTextColorProvider.GetColor(method), NameUtilities.CleanIdentifier(method.Name));
-			output.Write(BoxedTextColor.Punctuation, "(");
-			foreach (var p in method.Parameters) {
-				if (p.IsHiddenThisParameter)
-					continue;
-				if (p.MethodSigIndex > 0)
-					output.WriteCommaSpace();
-				decompiler.WriteType(output, p.Type.ToTypeDefOrRef(), false, p.ParamDef);
+		public void Write(ITextColorWriter output, IDecompiler decompiler, MethodDef method, bool showToken) =>
+			Write(output, decompiler, method, method, method.MethodSig, showToken, false);
+
+		void Write(ITextColorWriter output, IDecompiler decompiler, MethodDef? md, IMethod? m, MethodSig? msig, bool showToken, bool showGenericParams) {
+			if (md is null)
+				md = m?.ResolveMethodDef();
+			var method = (md ?? m)!;
+			Debug2.Assert(!(method is null));
+
+			var name = method.Name;
+			if (name == ".ctor")
+				output.Write(decompiler.MetadataTextColorProvider.GetColor(method.DeclaringType), NameUtilities.CleanIdentifier(method.DeclaringType.Name));
+			else
+				output.Write(decompiler.MetadataTextColorProvider.GetColor(method), NameUtilities.CleanIdentifier(name));
+
+			if (showGenericParams) {
+				if (m is MethodSpec ms && ms.GenericInstMethodSig is GenericInstMethodSig gis) {
+					output.Write(BoxedTextColor.Punctuation, "<");
+					var genericArgs = gis.GenericArguments;
+					for (int i = 0; i < genericArgs.Count; i++) {
+						if (i > 0)
+							output.WriteCommaSpace();
+						decompiler.WriteType(output, genericArgs[i].ToTypeDefOrRef(), false, null);
+					}
+					output.Write(BoxedTextColor.Punctuation, ">");
+				}
+				else if (!(md is null) && md.GenericParameters.Count > 0) {
+					output.Write(BoxedTextColor.Punctuation, "<");
+					var genericArgs = md.GenericParameters;
+					for (int i = 0; i < genericArgs.Count; i++) {
+						if (i > 0)
+							output.WriteCommaSpace();
+						output.Write(BoxedTextColor.MethodGenericParameter, GetName(md.GenericParameters, i) ?? "???");
+					}
+					output.Write(BoxedTextColor.Punctuation, ">");
+				}
 			}
-			if (method.CallingConvention == CallingConvention.VarArg || method.CallingConvention == CallingConvention.NativeVarArg) {
+
+			output.Write(BoxedTextColor.Punctuation, "(");
+			if (!(msig is null)) {
+				var ps = msig.Params;
+				var parameters = md?.Parameters;
+				int paramBaseIndex = md is null || md.IsStatic ? 0 : 1;
+				for (int i = 0; i < ps.Count; i++) {
+					var type = ps[i];
+					if (i > 0)
+						output.WriteCommaSpace();
+					var paramDef = parameters is null || paramBaseIndex + i >= parameters.Count ? null : parameters[paramBaseIndex + i].ParamDef;
+					decompiler.WriteType(output, type.ToTypeDefOrRef(), false, paramDef);
+				}
+			}
+			var callConv = msig is null ? 0 : msig.CallingConvention & CallingConvention.Mask;
+			if (callConv == CallingConvention.VarArg || callConv == CallingConvention.NativeVarArg) {
 				if (method.MethodSig.GetParamCount() > 0)
 					output.WriteCommaSpace();
 				output.Write(BoxedTextColor.Operator, "...");
@@ -262,8 +318,29 @@ namespace dnSpy.Contracts.Documents.TreeView {
 			output.WriteSpace();
 			output.Write(BoxedTextColor.Punctuation, ":");
 			output.WriteSpace();
-			decompiler.WriteType(output, method.ReturnType.ToTypeDefOrRef(), false, method.Parameters.ReturnParameter.ParamDef);
-			WriteToken(output, method, showToken);
+			decompiler.WriteType(output, (md?.MethodSig ?? msig)?.RetType.ToTypeDefOrRef(), false, md?.Parameters.ReturnParameter.ParamDef);
+			// m is the original ref, so use its token instead of the method def's token
+			WriteToken(output, (m ?? md)!, showToken);
 		}
+
+		static string? GetName(IList<GenericParam> genericParameters, int number) {
+			if ((uint)number < (uint)genericParameters.Count && genericParameters[number].Number == number)
+				return genericParameters[number].Name;
+			foreach (var gp in genericParameters) {
+				if (gp.Number == number)
+					return gp.Name;
+			}
+			return null;
+		}
+
+		/// <summary>
+		/// Writes a method
+		/// </summary>
+		/// <param name="output">Output</param>
+		/// <param name="decompiler">Decompiler</param>
+		/// <param name="method">Method</param>
+		/// <param name="showToken">true to write tokens</param>
+		public void WriteMethod(ITextColorWriter output, IDecompiler decompiler, IMethod method, bool showToken) =>
+			Write(output, decompiler, method.ResolveMethodDef(), method, method.MethodSig, showToken, true);
 	}
 }

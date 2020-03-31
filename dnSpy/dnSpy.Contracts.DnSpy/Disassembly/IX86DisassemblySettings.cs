@@ -109,12 +109,12 @@ namespace dnSpy.Contracts.Disassembly {
 		/// <summary>
 		/// Hex number prefix or null/empty string, eg. "0x"
 		/// </summary>
-		string HexPrefix { get; set; }
+		string? HexPrefix { get; set; }
 
 		/// <summary>
 		/// Hex number suffix or null/empty string, eg. "h"
 		/// </summary>
-		string HexSuffix { get; set; }
+		string? HexSuffix { get; set; }
 
 		/// <summary>
 		/// Size of a digit group
@@ -124,12 +124,12 @@ namespace dnSpy.Contracts.Disassembly {
 		/// <summary>
 		/// Decimal number prefix or null/empty string
 		/// </summary>
-		string DecimalPrefix { get; set; }
+		string? DecimalPrefix { get; set; }
 
 		/// <summary>
 		/// Decimal number suffix or null/empty string
 		/// </summary>
-		string DecimalSuffix { get; set; }
+		string? DecimalSuffix { get; set; }
 
 		/// <summary>
 		/// Size of a digit group
@@ -139,12 +139,12 @@ namespace dnSpy.Contracts.Disassembly {
 		/// <summary>
 		/// Octal number prefix or null/empty string
 		/// </summary>
-		string OctalPrefix { get; set; }
+		string? OctalPrefix { get; set; }
 
 		/// <summary>
 		/// Octal number suffix or null/empty string
 		/// </summary>
-		string OctalSuffix { get; set; }
+		string? OctalSuffix { get; set; }
 
 		/// <summary>
 		/// Size of a digit group
@@ -154,12 +154,12 @@ namespace dnSpy.Contracts.Disassembly {
 		/// <summary>
 		/// Binary number prefix or null/empty string
 		/// </summary>
-		string BinaryPrefix { get; set; }
+		string? BinaryPrefix { get; set; }
 
 		/// <summary>
 		/// Binary number suffix or null/empty string
 		/// </summary>
-		string BinarySuffix { get; set; }
+		string? BinarySuffix { get; set; }
 
 		/// <summary>
 		/// Size of a digit group
@@ -169,7 +169,7 @@ namespace dnSpy.Contracts.Disassembly {
 		/// <summary>
 		/// Digit separator or null/empty string
 		/// </summary>
-		string DigitSeparator { get; set; }
+		string? DigitSeparator { get; set; }
 
 		/// <summary>
 		/// Add leading zeroes to hexadecimal/octal/binary numbers, eg. 0x0000000A/0000000Ah vs 0xA/0Ah.
@@ -215,7 +215,7 @@ namespace dnSpy.Contracts.Disassembly {
 		/// <summary>
 		/// Sign extend memory displacements to the address size (16-bit, 32-bit, 64-bit), eg. 'mov al,[eax+12h]' vs 'mov al,[eax+00000012h]'
 		/// </summary>
-		bool SignExtendMemoryDisplacements { get; set; }
+		bool DisplacementLeadingZeroes { get; set; }
 
 		/// <summary>
 		/// Options that control if the memory size (eg. dword ptr) is shown or not.

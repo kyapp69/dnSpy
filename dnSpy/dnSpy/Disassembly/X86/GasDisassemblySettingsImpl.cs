@@ -67,7 +67,7 @@ namespace dnSpy.Disassembly.X86 {
 		public GasDisassemblySettings Clone() => CopyTo(new GasDisassemblySettings());
 
 		public GasDisassemblySettings CopyTo(GasDisassemblySettings other) {
-			if (other == null)
+			if (other is null)
 				throw new ArgumentNullException(nameof(other));
 			base.CopyTo(other);
 			other.NakedRegisters = NakedRegisters;
@@ -97,7 +97,7 @@ namespace dnSpy.Disassembly.X86 {
 			PropertyChanged += OnPropertyChanged;
 		}
 
-		void OnPropertyChanged(object sender, PropertyChangedEventArgs e) => Save();
+		void OnPropertyChanged(object? sender, PropertyChangedEventArgs e) => Save();
 
 		void Save() {
 			var sect = settingsService.RecreateSection(SETTINGS_GUID);

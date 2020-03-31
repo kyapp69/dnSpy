@@ -24,7 +24,7 @@ using dnSpy.Contracts.Settings;
 
 namespace dnSpy.Disassembly.X86 {
 	abstract class DisassemblySettings : IX86DisassemblySettings {
-		public event PropertyChangedEventHandler PropertyChanged;
+		public event PropertyChangedEventHandler? PropertyChanged;
 		protected void OnPropertyChanged(string propName) => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propName));
 
 		public bool UpperCasePrefixes {
@@ -203,7 +203,7 @@ namespace dnSpy.Disassembly.X86 {
 		}
 		bool showZeroDisplacements;
 
-		public string HexPrefix {
+		public string? HexPrefix {
 			get => hexPrefix;
 			set {
 				if (value != hexPrefix) {
@@ -212,9 +212,9 @@ namespace dnSpy.Disassembly.X86 {
 				}
 			}
 		}
-		string hexPrefix;
+		string? hexPrefix;
 
-		public string HexSuffix {
+		public string? HexSuffix {
 			get => hexSuffix;
 			set {
 				if (value != hexSuffix) {
@@ -223,7 +223,7 @@ namespace dnSpy.Disassembly.X86 {
 				}
 			}
 		}
-		string hexSuffix;
+		string? hexSuffix;
 
 		public int HexDigitGroupSize {
 			get => hexDigitGroupSize;
@@ -236,7 +236,7 @@ namespace dnSpy.Disassembly.X86 {
 		}
 		int hexDigitGroupSize = 4;
 
-		public string DecimalPrefix {
+		public string? DecimalPrefix {
 			get => decimalPrefix;
 			set {
 				if (value != decimalPrefix) {
@@ -245,9 +245,9 @@ namespace dnSpy.Disassembly.X86 {
 				}
 			}
 		}
-		string decimalPrefix;
+		string? decimalPrefix;
 
-		public string DecimalSuffix {
+		public string? DecimalSuffix {
 			get => decimalSuffix;
 			set {
 				if (value != decimalSuffix) {
@@ -256,7 +256,7 @@ namespace dnSpy.Disassembly.X86 {
 				}
 			}
 		}
-		string decimalSuffix;
+		string? decimalSuffix;
 
 		public int DecimalDigitGroupSize {
 			get => decimalDigitGroupSize;
@@ -269,7 +269,7 @@ namespace dnSpy.Disassembly.X86 {
 		}
 		int decimalDigitGroupSize = 3;
 
-		public string OctalPrefix {
+		public string? OctalPrefix {
 			get => octalPrefix;
 			set {
 				if (value != octalPrefix) {
@@ -278,9 +278,9 @@ namespace dnSpy.Disassembly.X86 {
 				}
 			}
 		}
-		string octalPrefix;
+		string? octalPrefix;
 
-		public string OctalSuffix {
+		public string? OctalSuffix {
 			get => octalSuffix;
 			set {
 				if (value != octalSuffix) {
@@ -289,7 +289,7 @@ namespace dnSpy.Disassembly.X86 {
 				}
 			}
 		}
-		string octalSuffix;
+		string? octalSuffix;
 
 		public int OctalDigitGroupSize {
 			get => octalDigitGroupSize;
@@ -302,7 +302,7 @@ namespace dnSpy.Disassembly.X86 {
 		}
 		int octalDigitGroupSize = 4;
 
-		public string BinaryPrefix {
+		public string? BinaryPrefix {
 			get => binaryPrefix;
 			set {
 				if (value != binaryPrefix) {
@@ -311,9 +311,9 @@ namespace dnSpy.Disassembly.X86 {
 				}
 			}
 		}
-		string binaryPrefix;
+		string? binaryPrefix;
 
-		public string BinarySuffix {
+		public string? BinarySuffix {
 			get => binarySuffix;
 			set {
 				if (value != binarySuffix) {
@@ -322,7 +322,7 @@ namespace dnSpy.Disassembly.X86 {
 				}
 			}
 		}
-		string binarySuffix;
+		string? binarySuffix;
 
 		public int BinaryDigitGroupSize {
 			get => binaryDigitGroupSize;
@@ -335,7 +335,7 @@ namespace dnSpy.Disassembly.X86 {
 		}
 		int binaryDigitGroupSize = 4;
 
-		public string DigitSeparator {
+		public string? DigitSeparator {
 			get => digitSeparator;
 			set {
 				if (value != digitSeparator) {
@@ -344,7 +344,7 @@ namespace dnSpy.Disassembly.X86 {
 				}
 			}
 		}
-		string digitSeparator = null;
+		string? digitSeparator = null;
 
 		public bool LeadingZeroes {
 			get => leadingZeroes;
@@ -437,16 +437,16 @@ namespace dnSpy.Disassembly.X86 {
 		}
 		bool signedMemoryDisplacements = true;
 
-		public bool SignExtendMemoryDisplacements {
-			get => signExtendMemoryDisplacements;
+		public bool DisplacementLeadingZeroes {
+			get => displacementLeadingZeroes;
 			set {
-				if (value != signExtendMemoryDisplacements) {
-					signExtendMemoryDisplacements = value;
-					OnPropertyChanged(nameof(SignExtendMemoryDisplacements));
+				if (value != displacementLeadingZeroes) {
+					displacementLeadingZeroes = value;
+					OnPropertyChanged(nameof(DisplacementLeadingZeroes));
 				}
 			}
 		}
-		bool signExtendMemoryDisplacements;
+		bool displacementLeadingZeroes;
 
 		public MemorySizeOptions MemorySizeOptions {
 			get => memorySizeOptions;
@@ -541,7 +541,7 @@ namespace dnSpy.Disassembly.X86 {
 			BranchLeadingZeroes = sect.Attribute<bool?>(nameof(BranchLeadingZeroes)) ?? BranchLeadingZeroes;
 			SignedImmediateOperands = sect.Attribute<bool?>(nameof(SignedImmediateOperands)) ?? SignedImmediateOperands;
 			SignedMemoryDisplacements = sect.Attribute<bool?>(nameof(SignedMemoryDisplacements)) ?? SignedMemoryDisplacements;
-			SignExtendMemoryDisplacements = sect.Attribute<bool?>(nameof(SignExtendMemoryDisplacements)) ?? SignExtendMemoryDisplacements;
+			DisplacementLeadingZeroes = sect.Attribute<bool?>(nameof(DisplacementLeadingZeroes)) ?? DisplacementLeadingZeroes;
 			MemorySizeOptions = sect.Attribute<MemorySizeOptions?>(nameof(MemorySizeOptions)) ?? MemorySizeOptions;
 			RipRelativeAddresses = sect.Attribute<bool?>(nameof(RipRelativeAddresses)) ?? RipRelativeAddresses;
 			ShowBranchSize = sect.Attribute<bool?>(nameof(ShowBranchSize)) ?? ShowBranchSize;
@@ -587,7 +587,7 @@ namespace dnSpy.Disassembly.X86 {
 			sect.Attribute(nameof(BranchLeadingZeroes), BranchLeadingZeroes);
 			sect.Attribute(nameof(SignedImmediateOperands), SignedImmediateOperands);
 			sect.Attribute(nameof(SignedMemoryDisplacements), SignedMemoryDisplacements);
-			sect.Attribute(nameof(SignExtendMemoryDisplacements), SignExtendMemoryDisplacements);
+			sect.Attribute(nameof(DisplacementLeadingZeroes), DisplacementLeadingZeroes);
 			sect.Attribute(nameof(MemorySizeOptions), MemorySizeOptions);
 			sect.Attribute(nameof(RipRelativeAddresses), RipRelativeAddresses);
 			sect.Attribute(nameof(ShowBranchSize), ShowBranchSize);
@@ -596,7 +596,7 @@ namespace dnSpy.Disassembly.X86 {
 		}
 
 		protected DisassemblySettings CopyTo(DisassemblySettings other) {
-			if (other == null)
+			if (other is null)
 				throw new ArgumentNullException(nameof(other));
 			other.UpperCasePrefixes = UpperCasePrefixes;
 			other.UpperCaseMnemonics = UpperCaseMnemonics;
@@ -635,7 +635,7 @@ namespace dnSpy.Disassembly.X86 {
 			other.BranchLeadingZeroes = BranchLeadingZeroes;
 			other.SignedImmediateOperands = SignedImmediateOperands;
 			other.SignedMemoryDisplacements = SignedMemoryDisplacements;
-			other.SignExtendMemoryDisplacements = SignExtendMemoryDisplacements;
+			other.DisplacementLeadingZeroes = DisplacementLeadingZeroes;
 			other.MemorySizeOptions = MemorySizeOptions;
 			other.RipRelativeAddresses = RipRelativeAddresses;
 			other.ShowBranchSize = ShowBranchSize;

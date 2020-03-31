@@ -45,7 +45,7 @@ namespace dnSpy.Disassembly.X86 {
 		public NasmDisassemblySettings Clone() => CopyTo(new NasmDisassemblySettings());
 
 		public NasmDisassemblySettings CopyTo(NasmDisassemblySettings other) {
-			if (other == null)
+			if (other is null)
 				throw new ArgumentNullException(nameof(other));
 			base.CopyTo(other);
 			other.ShowSignExtendedImmediateSize = ShowSignExtendedImmediateSize;
@@ -71,7 +71,7 @@ namespace dnSpy.Disassembly.X86 {
 			PropertyChanged += OnPropertyChanged;
 		}
 
-		void OnPropertyChanged(object sender, PropertyChangedEventArgs e) => Save();
+		void OnPropertyChanged(object? sender, PropertyChangedEventArgs e) => Save();
 
 		void Save() {
 			var sect = settingsService.RecreateSection(SETTINGS_GUID);

@@ -42,13 +42,18 @@ namespace dnSpy.Contracts.Documents.TreeView.Resources {
 
 		static ResourceElement CreateSerializedImage(Stream stream, string filename) {
 			object obj;
-			if (filename.EndsWith(".ico", StringComparison.OrdinalIgnoreCase))
+			string typeName;
+			if (filename.EndsWith(".ico", StringComparison.OrdinalIgnoreCase)) {
 				obj = new System.Drawing.Icon(stream);
-			else
+				typeName = SerializedImageUtilities.SystemDrawingIcon.AssemblyQualifiedName;
+			}
+			else {
 				obj = new System.Drawing.Bitmap(stream);
+				typeName = SerializedImageUtilities.SystemDrawingBitmap.AssemblyQualifiedName;
+			}
 			var serializedData = Serialize(obj);
 
-			var userType = new UserResourceType(obj.GetType().AssemblyQualifiedName, ResourceTypeCode.UserTypes);
+			var userType = new UserResourceType(typeName, ResourceTypeCode.UserTypes);
 			var rsrcElem = new ResourceElement {
 				Name = Path.GetFileName(filename),
 				ResourceData = new BinaryResourceData(userType, serializedData),
@@ -77,7 +82,7 @@ namespace dnSpy.Contracts.Documents.TreeView.Resources {
 		/// <param name="data">Serialized data</param>
 		/// <param name="obj">Deserialized data</param>
 		/// <returns></returns>
-		public static string Deserialize(byte[] data, out object obj) {
+		public static string Deserialize(byte[] data, out object? obj) {
 			try {
 				obj = new BinaryFormatter().Deserialize(new MemoryStream(data));
 				return string.Empty;
@@ -95,7 +100,7 @@ namespace dnSpy.Contracts.Documents.TreeView.Resources {
 		/// <param name="typeAsString">Data as a string</param>
 		/// <param name="obj">Updated with the deserialized data</param>
 		/// <returns></returns>
-		public static string CreateObjectFromString(Type targetType, string typeAsString, out object obj) {
+		public static string CreateObjectFromString(Type targetType, string typeAsString, out object? obj) {
 			obj = null;
 			try {
 				var typeConverter = TypeDescriptor.GetConverter(targetType);
@@ -116,7 +121,7 @@ namespace dnSpy.Contracts.Documents.TreeView.Resources {
 		/// </summary>
 		/// <param name="obj">Data</param>
 		/// <returns></returns>
-		public static string ConvertObjectToString(object obj) {
+		public static string? ConvertObjectToString(object obj) {
 			var objType = obj.GetType();
 
 			try {

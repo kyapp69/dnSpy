@@ -25,10 +25,6 @@ using System.Reflection;
 using System.Runtime.Loader;
 
 namespace dnSpy.MainApp {
-	partial class App {
-		readonly NetCoreAssemblyLoader netCoreAssemblyLoader = new NetCoreAssemblyLoader(AssemblyLoadContext.Default);
-	}
-
 	sealed class NetCoreAssemblyLoader {
 		string[] searchPaths;
 		readonly HashSet<string> searchPathsHash;
@@ -51,7 +47,7 @@ namespace dnSpy.MainApp {
 			this.searchPaths = searchPaths;
 		}
 
-		Assembly AssemblyLoadContext_Resolving(AssemblyLoadContext context, AssemblyName name) {
+		Assembly? AssemblyLoadContext_Resolving(AssemblyLoadContext context, AssemblyName name) {
 			foreach (var path in searchPaths) {
 				foreach (var asmExt in assemblyExtensions) {
 					var filename = Path.Combine(path, name.Name + asmExt);

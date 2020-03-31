@@ -205,7 +205,7 @@
     <value>İptal</value>
   </data>
   <data name="Decompiling" xml:space="preserve">
-    <value>Dekompilasyon...</value>
+    <value>Derleniyor...</value>
   </data>
   <data name="DerivedTypes" xml:space="preserve">
     <value>Türemiş Türler</value>
@@ -831,8 +831,8 @@
   <data name="AboutScreen_LoadedFiles" xml:space="preserve">
     <value>Yüklenen dosyalar:</value>
   </data>
-  <data name="SearchWindow_SearchGacAssemblies" xml:space="preserve">
-    <value>GAC Assembly'lerinde ara</value>
+  <data name="SearchWindow_SearchFrameworkAssemblies" xml:space="preserve">
+    <value>Çerçeve montajlarında ara</value>
   </data>
   <data name="SearchWindow_Where_AllFiles" xml:space="preserve">
     <value>Tüm Dosyalar</value>
@@ -2035,5 +2035,38 @@ Filtre Assembly Explorer seçeneklerinden değiştirilebilir.</value>
   </data>
   <data name="UnknownValue" xml:space="preserve">
     <value>&lt;Bilinmiyor&gt;</value>
+  </data>
+  <data name="TypeReferencesFolder" xml:space="preserve">
+    <value>Tür referansları</value>
+  </data>
+  <data name="TreeViewEventsFolder" xml:space="preserve">
+    <value>Olaylar</value>
+  </data>
+  <data name="TreeViewFieldsFolder" xml:space="preserve">
+    <value>Alanlar</value>
+  </data>
+  <data name="TreeViewMethodsFolder" xml:space="preserve">
+    <value>Yöntemler</value>
+  </data>
+  <data name="TreeViewPropertiesFolder" xml:space="preserve">
+    <value>Özellikler</value>
+  </data>
+  <data name="TreeViewTypesFolder" xml:space="preserve">
+    <value>Türler</value>
+  </data>
+  <data name="NumberBaseFormatString" xml:space="preserve">
+    <value>Baz</value>
+  </data>
+  <data name="RawValue" xml:space="preserve">
+    <value>Ham:</value>
+  </data>
+  <data name="RecentFilesCommand" xml:space="preserve">
+    <value>Son_Dosyalar</value>
+  </data>
+  <data name="ToolTip_Instruction" xml:space="preserve">
+    <value>Talimat</value>
+  </data>
+  <data name="ToolTip_OpCode" xml:space="preserve">
+    <value>Op Kodu</value>
   </data>
 </root>

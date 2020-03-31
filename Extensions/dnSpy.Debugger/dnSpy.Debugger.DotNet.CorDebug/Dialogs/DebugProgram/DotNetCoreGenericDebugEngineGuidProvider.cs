@@ -18,9 +18,10 @@
 */
 
 using System;
+using System.Diagnostics;
 using System.IO;
 using dnSpy.Contracts.Debugger.StartDebugging;
-using dnSpy.Debugger.DotNet.CorDebug.Utilities;
+using dnSpy.Debugger.DotNet.CorDebug.Impl;
 
 namespace dnSpy.Debugger.DotNet.CorDebug.Dialogs.DebugProgram {
 	[ExportGenericDebugEngineGuidProvider(PredefinedGenericDebugEngineGuidProviderOrders.DotNetCore)]
@@ -34,29 +35,18 @@ namespace dnSpy.Debugger.DotNet.CorDebug.Dialogs.DebugProgram {
 		internal static bool IsDotNetCoreAppHostFilename(string filename) {
 			if (!File.Exists(filename))
 				return false;
+			return
+				AppHostUtils.IsDotNetCoreBundleV1(filename) ||
+				AppHostUtils.IsDotNetCoreBundleV2_or_AppHost(filename) ||
+				IsKnownDotNetCoreAppHost(filename) ||
+				AppHostUtils.IsDotNetCoreAppHostV1(filename, out _);
+		}
 
-			// We detect the apphost.exe like so:
-			//	- must have an exe extension
-			//	- must be a PE file and an EXE (DLL bit cleared)
-			//	- must not have .NET metadata
-			//	- must have a file with the same name but a dll extension
-			//	- this dll file must be a PE file and have .NET metadata
-
-			if (!StringComparer.OrdinalIgnoreCase.Equals(Path.GetExtension(filename), ".exe"))
-				return false;
-			var dllFilename = Path.ChangeExtension(filename, "dll");
-			if (!File.Exists(dllFilename))
-				return false;
-			if (!PortableExecutableFileHelpers.IsPE(filename, out bool isExe, out bool hasDotNetMetadata))
-				return false;
-			if (!isExe || hasDotNetMetadata)
-				return false;
-			if (!PortableExecutableFileHelpers.IsPE(dllFilename, out _, out hasDotNetMetadata))
-				return false;
-			if (!hasDotNetMetadata)
-				return false;
-
-			return true;
+		static bool IsKnownDotNetCoreAppHost(string filename) {
+			if (AppHostUtils.TryGetAppHostEmbeddedDotNetDllPath(filename, out var couldBeAppHost, out _))
+				return true;
+			Debug.Assert(!couldBeAppHost, $"Looks like an unsupported apphost, update {nameof(AppHostInfoData)} table");
+			return false;
 		}
 	}
 }
